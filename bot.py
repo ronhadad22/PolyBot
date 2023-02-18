@@ -26,7 +26,7 @@ class Bot:
         """Sends video to a chat"""
         context.bot.send_video(chat_id=update.message.chat_id, video=open(file_path, 'rb'), supports_streaming=True)
 
-    def send_text(self, update,  text, quote=False):
+    def send_text(self, update: object, text: object, quote: object = False) -> object:
         """Sends text to a chat"""
         # retry https://github.com/python-telegram-bot/python-telegram-bot/issues/1124
         update.message.reply_text(text, quote=quote)
@@ -43,13 +43,35 @@ class QuoteBot(Bot):
 
 
 class YoutubeBot(Bot):
-    pass
+    def _message_handler(self, update, context):
+        # get the user's message text
+        message_text = update.message.text
+
+        # check if the message is a YouTube video link
+        if message_text.startswith('https://www.youtube.com/watch?v='):
+            # download the video from the link and get the file path
+            file_path = search_download_youtube_video(message_text)
+
+        else:
+            #if the message is not a YouTube video link, send an error message to the user
+            self.send_text(update, 'Please send a valid YouTube video link.')
+            if file_path is not None:
+            # send the video to the user
+                self.send_video(update, context, file_path)
+            else:
+            # if the download failed, send an error message to the user
+                self.send_text(update, 'Sorry, could not download the video.')
+
+
+    def send_video(self, update, context, file_paths):
+        """Sends video to a chat"""
+        for file_path in file_paths:
+            context.bot.send_video(chat_id=update.message.chat_id, video=open(file_path, 'rb'), supports_streaming=True)
 
 
 if __name__ == '__main__':
     with open('.telegramToken') as f:
         _token = f.read()
 
-    my_bot = Bot(_token)
+    my_bot = QuoteBot(_token)
     my_bot.start()
-
