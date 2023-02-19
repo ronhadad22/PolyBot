@@ -7,7 +7,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'git-hub-ron', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
 
-                sh '''
+                sh 'echo''hello world'
                 docker login --username $user --password $pass
                 docker build ...
                 docker tag ...
