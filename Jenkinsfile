@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build PolyBot') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'git-hub-ron', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
@@ -17,12 +17,12 @@ pipeline {
                 }
             }
         }
-        stage('Stage II') {
+        stage('Stage II PolyBot') {
             steps {
                 sh 'echo "stage II..."'
             }
         }
-        stage('Stage III ...') {
+        stage('Stage III PolyBot') {
             steps {
                 sh 'echo echo "stage III..."'
             }
