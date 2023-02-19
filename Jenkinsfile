@@ -4,14 +4,13 @@ pipeline {
     stages {
         stage('Build PolyBot') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'git-hub-ron', passwordVariable: 'pass', usernameVariable: 'user')]) {
-
+                withCredentials([usernamePassword(credentialsId: 'docker_hub_ci_cd_repo', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
                 sh '''
                 docker login --username $user --password $pass
-                docker build ...
-                docker tag ...
-                docker push ...
+                docker build .
+                docker tag polybot_bibi bibiefrat/ci_cd_1:polybot_bibi
+                docker push bibiefrat/ci_cd_1:polybot_bibi
            '''
                 }
             }
