@@ -18,8 +18,9 @@ pipeline {
         stage('Stage II PolyBot') {
             steps {
                 sh 'echo "stage II..."'
-                sh """id=`docker images --filter='reference=bibiefrat/ci_cd_1' --quiet`"""
-                sh "echo $id"
+                sh """image_id=`docker images --filter='reference=bibiefrat/ci_cd_1' --quiet`"""
+                sh """echo $image_id"""
+
             }
         }
         stage('Stage III PolyBot') {
