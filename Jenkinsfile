@@ -18,6 +18,8 @@ pipeline {
         stage('Stage II PolyBot') {
             steps {
                 sh 'echo "stage II..."'
+                sh """id=`docker images | grep olybot_bibi_${env.BUILD_ID} | awk '{print $3}'`"""
+                sh "echo $id"
             }
         }
         stage('Stage III PolyBot') {
