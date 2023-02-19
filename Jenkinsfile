@@ -18,7 +18,8 @@ pipeline {
         stage('Stage II PolyBot') {
             steps {
                 sh 'echo "stage II..."'
-                image_id = sh """docker images --filter='reference=bibiefrat/ci_cd_1' --quiet"""
+                sh """docker images --filter='reference=bibiefrat/ci_cd_1' --quiet > image_id.txt"""
+                mage_id = readFile('image_id.txt').trim()
                 sh """echo $image_id"""
 
             }
