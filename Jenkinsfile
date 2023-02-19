@@ -9,8 +9,8 @@ pipeline {
                 sh """
 
                 docker login -u $user -p $pass
-                docker build -t bibiefrat/ci_cd_1:polybot_bibi .
-                docker push bibiefrat/ci_cd_1:polybot_bibi
+                docker build -t bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} .
+                docker push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}
            """
                 }
             }
