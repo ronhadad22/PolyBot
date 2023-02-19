@@ -19,7 +19,7 @@ pipeline {
             steps {
                 sh 'echo "stage II..."'
                 sh """docker images --filter='reference=bibiefrat/ci_cd_1' --quiet > image_id.txt"""
-                mage_id = readFile('image_id.txt').trim()
+                image_id = readFile('image_id.txt').trim()
                 sh """echo $image_id"""
 
             }
