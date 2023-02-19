@@ -42,13 +42,26 @@ class QuoteBot(Bot):
 
 
 class YoutubeBot(Bot):
-    pass
+    def _message_handler(self, update, context):
+        message_text = update.message.text
+        if message_text.startswith('https://www.youtube.com/watch?v='):
+            path_of_video = search_download_youtube_video(message_text)
+        else:
+            self.send_text(update, 'Sorry, it not a valid youtube video, please try again .')
+            if  path_of_video is not None:
+                self.send_video(update, context,  path_of_video)
+            else:
+                self.send_text(update, 'Sorry we could not download the video please try again later :).')
 
+
+    def send_video(self, update, context, file_paths):
+        for file_path in file_paths:
+            context.bot.send_video(chat_id=update.message.chat_id, video=open(file_path, 'rb'), supports_streaming=True)
 
 if __name__ == '__main__':
-    with open('.telegramToken') as f:
+    with open('test/.telegramToken') as f:
         _token = f.read()
 
-    my_bot = Bot(_token)
+    my_bot = QuoteBot(_token)
     my_bot.start()
 
