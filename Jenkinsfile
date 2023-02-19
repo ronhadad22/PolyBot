@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker { image 'python:3.10.7-alpine' } }
+    agent { docker { image 'ubuntu:latest' } }
 
     stages {
         stage('Build I PolyBot') {
