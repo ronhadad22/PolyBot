@@ -2,12 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Build PolyBot') {
+        stage('Build I PolyBot') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker_hub_ci_cd_repo', passwordVariable: 'pass', usernameVariable: 'user')]) {
-
                 sh """
-
                 docker login -u $user -p $pass
                 docker build -t bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} .
                 docker push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}
@@ -21,7 +19,7 @@ pipeline {
                 script {
                     env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1" --quiet').trim()
                     env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm -d ${IMG_ID}').trim()
-                    sh "echo 'do some tests!!!'"
+                    sh "echo 'do some tests!!!; sleep 20'"
                     sh "docker stop ${env.CONT_ID}"
                 }
 
