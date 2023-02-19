@@ -23,6 +23,7 @@ pipeline {
                     env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm -d ${env.IMG_ID} sleep 10').trim()
                     sh "docker stop ${env.CONT_ID}"
                     sh "sleep 10"
+
                 }
 
             }
