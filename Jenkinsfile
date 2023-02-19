@@ -19,8 +19,6 @@ pipeline {
             steps {
                 sh 'echo "stage II..."'
                 sh """id=`docker images --filter='reference=bibiefrat/ci_cd_1' --quiet`; docker run -rm -d $id sleep10"""
-                image_id = readFile(file: 'image_id.txt').trim()
-                sh """echo $image_id"""
 
             }
         }
