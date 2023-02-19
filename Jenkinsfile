@@ -21,7 +21,7 @@ pipeline {
                 script {
                     env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1" --quiet').trim()
                     env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm -d ${IMG_ID}').trim()
-                    sh "echo 'do some tests!!!!'"
+                    sh "echo 'do some tests!!!'"
                     sh "docker stop ${env.CONT_ID}"
                 }
 
