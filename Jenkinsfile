@@ -11,7 +11,6 @@ pipeline {
                 docker build -t polybot_bibi .
                 docker tag polybot_bibi bibiefrat/ci_cd_1:polybot_bibi
                 docker push bibiefrat/ci_cd_1:polybot_bibi
-
            """
                 }
             }
