@@ -8,6 +8,7 @@ pipeline {
 
 
                 sh '''
+
                 docker login --username $user --password $pass
                 docker build ...
                 docker tag ...
