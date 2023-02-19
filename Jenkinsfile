@@ -20,9 +20,9 @@ pipeline {
                 sh 'echo "stage II..."'
                 script {
                     env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1" --quiet').trim()
-                    sh "docker run --rm -d ${env.IMG_ID} sleep 10"
                     env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm -d ${env.IMG_ID} sleep 10').trim()
                     sh "docker stop ${env.CONT_ID}"
+                    sh "sleep 10"
                 }
 
             }
