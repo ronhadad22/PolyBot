@@ -18,7 +18,7 @@ pipeline {
         stage('Stage II PolyBot') {
             steps {
                 sh 'echo "stage II..."'
-                sh """id=`docker images | grep polybot_bibi_${env.BUILD_ID} | awk '\\{print $3\\}'`"""
+                sh '''id=docker images --filter="reference=bibiefrat/ci_cd_1" --quiet'''
                 sh "echo $id"
             }
         }
