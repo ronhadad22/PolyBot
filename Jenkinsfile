@@ -7,7 +7,6 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker_hub_ci_cd_repo', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
                 sh '''
-
                 docker login -u $user -p $pass
                 docker build .
                 docker tag polybot_bibi bibiefrat/ci_cd_1:polybot_bibi
