@@ -19,8 +19,8 @@ pipeline {
             steps {
                 sh 'echo "stage II..."'
                 script {
-                    env.SCRIPT_RET=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1" --quiet').trim()
-                    sh "docker run --rm -d ${env.SCRIPT_RET} sleep 10"
+                    env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1" --quiet').trim()
+                    sh "docker run --rm -it ${env.IMG_ID} sleep 10"
                 }
 
             }
