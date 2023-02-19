@@ -18,7 +18,7 @@ pipeline {
         stage('Stage II PolyBot') {
             steps {
                 sh 'echo "stage II..."'
-                env.SCRIPT_RET=sh(returnStdout: true, script: 'docker images --filter='reference=bibiefrat/ci_cd_1' --quiet').trim()
+                env.SCRIPT_RET=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1" --quiet').trim()
 
             }
         }
