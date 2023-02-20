@@ -71,7 +71,7 @@ class YoutubeBot(Bot):
 
 if __name__ == '__main__':
     with open('.telegramToken') as f:
-        _token = f.read()
+        _token = f.read().strip()
 
     my_bot = QuoteBot(_token)
     my_bot.start()
