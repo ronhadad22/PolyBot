@@ -23,6 +23,8 @@ class Bot:
         """Main messages handler"""
         self.send_text(update, f'Your original message: {update.message.text}')
 
+    # Changing in send_video function because of the (Optional) in Part 5
+
     def send_video(self, update, context, video_id):
         """Sends video to a chat"""
         if video_id in self.video_cache:
@@ -33,7 +35,7 @@ class Bot:
             self.video_cache[video_id] = file_path
         context.bot.send_video(chat_id=update.message.chat_id, video=open(file_path, 'rb'), supports_streaming=True)
 
-    def send_text(self, update,  text, quote=False):
+    def send_text(self, update, text, quote=False):
         """Sends text to a chat"""
         # retry https://github.com/python-telegram-bot/python-telegram-bot/issues/1124
         update.message.reply_text(text, quote=quote)
@@ -51,6 +53,7 @@ class QuoteBot(Bot):
 
 class YoutubeBot(Bot):
 
+    # Continue to Part 5 (Optional)
     def __init__(self, token):
         super().__init__(token)
         self.cache_dir = 'video_cache'
@@ -58,6 +61,7 @@ class YoutubeBot(Bot):
             os.mkdir(self.cache_dir)
         self.video_cache = {}
 
+    # YouTube downloading
     def _message_handler(self, update, context):
         """Handles messages containing video IDs"""
         text = update.message.text
