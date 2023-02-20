@@ -73,6 +73,8 @@ class YoutubeBot(Bot):
 
 
 if __name__ == '__main__':
+    with open('.telegramToken') as f:
+        _token = f.read()
 
-    youtubebot = YoutubeBot(5830256501:AAEw2SQ98GeG9mI5Ze2Soi_aupyFL5CaMI00)
+    youtubebot = YoutubeBot(_token)
     youtubebot.start()
