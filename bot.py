@@ -1,6 +1,7 @@
 from telegram.ext import Updater, MessageHandler, Filters
 from utils import search_download_youtube_video
 from loguru import logger
+import os
 
 
 class Bot:
@@ -22,8 +23,14 @@ class Bot:
         """Main messages handler"""
         self.send_text(update, f'Your original message: {update.message.text}')
 
-    def send_video(self, update, context, file_path):
+    def send_video(self, update, context, video_id):
         """Sends video to a chat"""
+        if video_id in self.video_cache:
+            file_path = self.video_cache[video_id]
+            self.send_text(update, f'Sending cached copy of video {video_id}...')
+        else:
+            file_path = search_download_youtube_video(video_id)
+            self.video_cache[video_id] = file_path
         context.bot.send_video(chat_id=update.message.chat_id, video=open(file_path, 'rb'), supports_streaming=True)
 
     def send_text(self, update,  text, quote=False):
@@ -43,13 +50,28 @@ class QuoteBot(Bot):
 
 
 class YoutubeBot(Bot):
-    pass
+
+    def __init__(self, token):
+        super().__init__(token)
+        self.cache_dir = 'video_cache'
+        if not os.path.exists(self.cache_dir):
+            os.mkdir(self.cache_dir)
+        self.video_cache = {}
+
+    def _message_handler(self, update, context):
+        """Handles messages containing video IDs"""
+        text = update.message.text
+        if text.startswith('https://www.youtube.com/watch?v='):
+            video_id = text.split('=')[-1]
+            self.send_video(update, context, video_id)
+        else:
+            self.send_text(update, 'Invalid video link')
 
 
 if __name__ == '__main__':
     with open('.telegramToken') as f:
         _token = f.read()
 
-    my_bot = Bot(_token)
-    my_bot.start()
+    youtubebot = YoutubeBot(_token)
+    youtubebot.start()
 
