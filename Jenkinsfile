@@ -2,7 +2,7 @@ pipeline {
     agent {
     docker {
 
-        image 'docker'
+        image 'node_bibi'
         args  '-v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
