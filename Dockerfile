@@ -1,9 +1,16 @@
-FROM python:3.8.12-slim-buster
-WORKDIR /PolyBot
-COPY bot.py bot.py
-COPY utils.py utils.py
-COPY .telegramToken .telegramToken
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-CMD ["python3", "bot.py"]
+FROM python:3.9.16-slim
 
+ARG TELEGRAM_TOKEN
+
+WORKDIR /app
+
+COPY requirements.txt requirements.txt
+
+RUN pip3 install -r requirements.txt
+
+COPY . .
+
+# Set the Telegram token using the build arg
+RUN echo $TELEGRAM_TOKEN > .telegramToken
+
+CMD ["python3", "bot.py"]
