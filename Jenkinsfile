@@ -2,8 +2,8 @@ pipeline {
     agent {
     docker {
 
-        image 'docker_bibi'
-        args  '-v /var/run/docker.sock:/var/run/docker.sock apk update && apk add --no-cache docker-cli'
+        image 'docker'
+        args  '-v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
 
