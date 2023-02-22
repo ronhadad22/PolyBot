@@ -3,7 +3,7 @@ pipeline {
     docker {
 
         image 'jenkins/agent:bibi1'
-        args  '-v /var/run/docker.sock:/var/run/docker.sock -u toot'
+        args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
         }
     }
 
