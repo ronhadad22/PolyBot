@@ -3,7 +3,7 @@ pipeline {
     docker {
 
         image 'docker_bibi'
-        args  '-v /var/run/docker.sock:/var/run/docker.sock --privileged'
+        args  '-v /var/run/docker.sock:/var/run/docker.sock apk update && apk add --no-cache docker-cli'
         }
     }
 
