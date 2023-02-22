@@ -4,15 +4,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'git-hub-ron', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                withCredentials([usernamePassword(credentialsId: 'github-login', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
-
-                sh 'echo''hello world'
-                docker login --username $user --password $pass
-                docker build ...
-                docker tag ...
-                docker push ...
-           '''
+                  sh "sudo docker build -t ronhad/private-course:poly-bot-${env.BUILD_NUMBER} . "
+                  sh "sudo docker login --username $user --password $pass"
+                  sh "sudo docker push ronhad/private-course:poly-bot-${env.BUILD_NUMBER}"
+ //               sh '''
+ //               docker login --username $user --password $pass
+ //               docker build ...
+ //               docker tag ...
+ //               docker push ...
+ //          '''
                 }
             }
         }
