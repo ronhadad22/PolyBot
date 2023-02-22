@@ -6,9 +6,9 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-login', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
-                  sh "docker build -t kubealon/private-course:poly-bot-${env.BUILD_NUMBER} . "
-                  sh "docker login --username $user --password $pass"
-                  sh "docker push kubealon/private-course:poly-bot-${env.BUILD_NUMBER}"
+                  sh "sudo docker build -t kubealon/private-course:poly-bot-${env.BUILD_NUMBER} . "
+                  sh "sudo docker login --username $user --password $pass"
+                  sh "sudo docker push kubealon/private-course:poly-bot-${env.BUILD_NUMBER}"
  //               sh '''
  //               docker login --username $user --password $pass
  //               docker build ...
