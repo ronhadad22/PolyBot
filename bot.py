@@ -34,11 +34,11 @@ class Bot:
 class QuoteBot(Bot):
     def _message_handler(self, update, context):
         to_quote = True
-        if update.message.text == 'Don\'t quote me please':
+        if update.message.text == 'Dont repeat':
             to_quote = False
-
-        self.send_text(update, f'Your original message: {update.message.text}', quote=to_quote)
-
+            print(to_quote)
+        else:
+            self.send_text(update, f'Your original message: {update.message.text}', quote=to_quote)
 
 class YoutubeBot(Bot):
     def _message_handler(self, update, context):
