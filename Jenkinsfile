@@ -14,13 +14,11 @@ node{
 	          }
 	    }
 
-	    post {
-        always {
+	    def postAlways(){
             sh """
             docker rmi -f bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}
             """
         }
-    }
 
 
 }
