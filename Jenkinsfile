@@ -25,8 +25,8 @@ node{
 	    }
 
     stage(" Deployment of docker container on Docker host"){
-            def dockerrm  = 'docker container rm -f bibi_polybot'
-            def dockerrun = 'docker container run -d --name bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}'
+            sh 'docker container rm -f bibi_polybot'
+            sh 'docker container run -d --name bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}'
             sh "echo 'do some tests!!!'; sleep 30"
             }
 }
