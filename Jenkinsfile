@@ -4,7 +4,7 @@ node{
 	     }
 
         stage("Build Docker file"){
-	         sh 'docker image build bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID} .'
+	         sh 'docker build bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID} .'
 	     }
 }
 
