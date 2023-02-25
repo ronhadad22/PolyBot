@@ -8,13 +8,8 @@ try {
 
 
 def pipeline(){
-
-node(docker {
-                image 'docker'
-                args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
-                }
-        )
-{
+dockerNode(image: 'docker') {
+    // some block
 
 
     stage("Pull source code from github"){
