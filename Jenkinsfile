@@ -1,3 +1,13 @@
+try {
+    pipeline()
+} catch (e) {
+    postFailure(e)
+} finally {
+    postAlways()
+}
+
+
+def pipeline(){}
 node{
 	    stage("Pull source code from github"){
 	        git branch: 'ci_cd_1', url: 'https://github.com/bibiefart/PolyBot.git'
@@ -18,9 +28,17 @@ node{
 
 
 }
-def postAlways(){
-            sh """
-            docker rmi -f bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}
-            """
-        }
+}
+
+def postFailure(e) {
+    println "Failed because of $e"
+    println 'This will run only if failed'
+
+}
+
+def postAlways() {
+   sh """
+        docker rmi -f bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}
+      """
+}
 
