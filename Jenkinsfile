@@ -8,7 +8,16 @@ try {
 
 
 def pipeline(){
+additionalBuildArgs = "-v /var/run/docke.sock:/var/run/docker.sock"
+}
 node{
+    agent {
+        docker {
+            image 'docker'
+            args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+            }
+    }
+
 	    stage("Pull source code from github"){
 	        git branch: 'ci_cd_1', url: 'https://github.com/bibiefart/PolyBot.git'
 	     }
