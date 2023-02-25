@@ -9,14 +9,14 @@ try {
 
 def pipeline(){
 
-node{
-
-    agent {
+node(agent {
             docker {
                 image 'docker'
                 args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
                 }
-        }
+        })
+{
+
 
     stage("Pull source code from github"){
         git branch: 'ci_cd_1', url: 'https://github.com/bibiefart/PolyBot.git'
@@ -36,7 +36,7 @@ node{
     stage(" Deployment of docker container on Docker host"){
             // sh 'docker container run -d --rm bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}'
             env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm -d bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}').trim()
-            sh "echo 'do some tests!!!'; sleep 30"
+            sh "echo 'do some tests!!!'; sleep 10"
             sh 'docker rm -f ${CONT_ID}'
             }
 }
