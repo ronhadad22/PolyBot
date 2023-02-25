@@ -6,6 +6,14 @@ node{
         stage("Build Docker file"){
 	         sh 'docker build -t bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID} .'
 	     }
+
+	     stage(" Pushing the image to docker hub " ){
+	         withCredentials([string(credentialsId: 'docker_hub_ci_cd_repo', variable: 'docker_hub_ci_cd_repo')]) {
+	          sh 'docker login -u bibiefrat -p  ${dockerhubpassword}'
+	          sh 'docker image push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}'
+	          }
+	    }
+
 }
 
 
