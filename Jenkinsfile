@@ -10,7 +10,7 @@ node{
 	     stage(" Pushing the image to docker hub " ){
 	         withCredentials([string(credentialsId: 'dockerhubpassword', variable: 'dockerhubpassword')]) {
 	          sh 'docker login -u bibiefrat -p  ${dockerhubpassword}'
-	          sh 'docker image push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}'
+	          sh 'docker push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}'
 	          }
 	    }
 
