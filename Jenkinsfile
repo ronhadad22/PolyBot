@@ -8,10 +8,8 @@ try {
 
 
 def pipeline(){
-node(image: 'docker', sideContainers: ['-v /var/run/docker.sock:/var/run/docker.sock -u root']) {
-    // some block
-
-
+node{
+    docker.image('docker').inside('-v /var/run/docker.sock:/var/run/docker.sock -u root') {
     stage("Pull source code from github"){
         git branch: 'ci_cd_1', url: 'https://github.com/bibiefart/PolyBot.git'
      }
@@ -33,8 +31,9 @@ node(image: 'docker', sideContainers: ['-v /var/run/docker.sock:/var/run/docker.
             sh "echo 'do some tests!!!'; sleep 10"
             sh 'docker rm -f ${CONT_ID}'
             }
-}
-}
+} //docker.image
+} //node
+} //pipeline
 
 def postFailure(e) {
     println "Failed because of $e"
