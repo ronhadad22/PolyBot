@@ -8,7 +8,7 @@ try {
 
 
 def pipeline(){
-dockerNode(image: 'docker', sideContainers: ['-v /var/run/docker.sock:/var/run/docker.sock -u root']) {
+node(image: 'docker', sideContainers: ['-v /var/run/docker.sock:/var/run/docker.sock -u root']) {
     // some block
 
 
