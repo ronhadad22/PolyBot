@@ -8,7 +8,7 @@ try {
 
 
 def pipeline(){
-dockerNode(image: 'docker') {
+dockerSlaves(image: 'docker') {
     // some block
 
 
