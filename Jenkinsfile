@@ -10,10 +10,7 @@ pipeline {
                         sh "echo $DOCKERHUB_PASSWORD | sudo -S docker login --username $DOCKERHUB_USERNAME --password-stdin"
                         sh "sudo docker push kubealon/private-course:poly-bot-${env.BUILD_NUMBER}"
                         sh "echo $pass | sudo -S docker push kubealon/private-course:poly-bot-${env.BUILD_NUMBER}"
-                        sh "echo $pass | sudo -S docker build ..."
-                        sh "echo $pass | sudo -S docker tag ..."
-                        sh "echo $pass | sudo -S docker push ..."
-                    }
+                       }
                 }
             }
         }
