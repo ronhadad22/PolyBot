@@ -1,50 +1,55 @@
-try {
-    pipeline()
-} catch (e) {
-    postFailure(e)
-} finally {
-    postAlways()
-}
-
-
-def pipeline(){
-node{
-    docker.image('docker').inside('-v /var/run/docker.sock:/var/run/docker.sock -u root') {
-    stage("Pull source code from github"){
-        git branch: 'ci_cd_1', url: 'https://github.com/bibiefart/PolyBot.git'
-     }
-
-    stage("Build Docker file"){
-         sh 'docker build -t bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID} .'
-     }
-
-     stage(" Pushing the image to docker hub " ){
-         withCredentials([string(credentialsId: 'dockerhubpassword', variable: 'dockerhubpassword')]) {
-          sh 'docker login -u bibiefrat -p  ${dockerhubpassword}'
-          sh 'docker push bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}'
-          }
+pipeline {
+    options {
+        buildDiscarder(logRotator(daysToKeepStr: '1'))
+        disableConcurrentBuilds()
+        timestamps()
+        timeout(time: 10, unit: 'MINUTES')
     }
 
-    stage(" Deployment of docker container on Docker host"){
-            // sh 'docker container run -d --rm bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}'
-            env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm -d bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}').trim()
-            sh "echo 'do some tests!!!'; sleep 20"
-            sh 'docker rm -f ${CONT_ID}'
+
+    agent {
+    docker {
+        image 'docker'
+        args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+        }
+    }
+
+    stages {
+        stage('Build I PolyBot') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker_hub_ci_cd_repo', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                sh """
+                docker login -u $user -p $pass
+                docker build -t bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} .
+                docker push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}
+           """
+                }
             }
-} //docker.image
-} //node
-} //pipeline
+        }
+        stage('Stage II PolyBot') {
+            steps {
+                sh 'echo "stage II..."'
+                script {
+                    env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1:polybot_bibi*" --quiet').trim()
+                    sh "echo --------- image ID: ${IMG_ID} -----"
+                    env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm -d ${IMG_ID}').trim()
+                    sh "echo 'do some tests!!!'; sleep 30"
+                    sh "docker stop ${env.CONT_ID}"
+                }
 
-def postFailure(e) {
-    println "Failed because of $e"
-    println 'This will run only if failed'
-
-}
-
-def postAlways() {
-node{
-   sh """
-        docker rmi -f bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}
-      """
+            }
+        }
+        stage('Stage II PolyBot') {
+            steps {
+                sh 'echo echo "stage III..."'
+            }
+        }
+    }
+    post {
+        always {
+            sh """
+            docker rmi -f bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}
+            """
+        }
     }
 }
