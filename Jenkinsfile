@@ -1,7 +1,7 @@
 pipeline {
 agent any 
     options{
-    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '80', numToKeepStr: '100')), 
+    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10')), 
     disableConcurrentBuilds(), 
     parameters([choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce')]), 
     pipelineTriggers([githubPush()])])
