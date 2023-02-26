@@ -26,9 +26,7 @@ pipeline {
         }
     }
     environment {
-        withCredentials([string(credentialsId: 'synk_token', variable: 'token')]) {
-        SNYK_TOKEN = ${token}
-        }
+              SNYK_TOKEN = credentials('synk_token')
     }
 
     stages {
