@@ -1,5 +1,14 @@
 pipeline {
 
+options {
+        buildDiscarder(logRotator(daysToKeepStr: '1'))
+        disableConcurrentBuilds()
+        timestamps()
+        timeout(time: 10, unit: 'MINUTES')
+    }
+
+
+
     agent {
     docker {
         image 'docker'
@@ -26,7 +35,7 @@ pipeline {
                     env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1:polybot_bibi*" --quiet').trim()
                     sh "echo --------- image ID: ${IMG_ID} -----"
                     env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm -d ${IMG_ID}').trim()
-                    sh "echo 'do some tests!!!'; sleep 30"
+                    sh "echo 'do some tests!!!'; sleep 5"
                     sh "docker stop ${env.CONT_ID}"
                 }
 
