@@ -6,6 +6,11 @@ agent any
     parameters([choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce')]), 
     pipelineTriggers([githubPush()])])
     }
+    
+    
+    options {
+        disableConcurrentBuilds()
+    }
     stages {
         stage('Build') {
             steps {
