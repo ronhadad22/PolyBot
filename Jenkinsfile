@@ -1,6 +1,6 @@
 pipeline {
 agent any 
-    oprions{
+    options{
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '80', numToKeepStr: '100')), 
     disableConcurrentBuilds(), 
     parameters([choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce')]), 
