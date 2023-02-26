@@ -5,7 +5,7 @@ pipeline {
    steps {
        bat '''
             docker login --username happytoast --password myaccesstoken
-            docker pull happytoast/build_bot
+            docker push happytoast/build_bot
             docker build .
        '''
    }
