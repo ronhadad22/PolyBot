@@ -1,10 +1,11 @@
 pipeline {
 agent any 
 
-    
-    
-    options {
-        disableConcurrentBuilds()
+    options{
+    buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10')), 
+    disableConcurrentBuilds(), 
+    parameters([choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce')]), 
+    pipelineTriggers([githubPush()])
     }
     stages {
         stage('Build') {
