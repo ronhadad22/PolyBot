@@ -37,6 +37,7 @@ pipeline {
                 docker login -u $user -p $pass
                 docker build -t bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} .
                 docker push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}
+                snyk container test bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} --file=Dockerfile --severity-threshold=high
            """
                 }
             }
@@ -56,8 +57,9 @@ pipeline {
         }
         stage('Stage III PolyBot') {
             steps {
+                sh '<<<<<<<<<<<<<< echo "testing with snyk>>>>>>>>>>>>>>>>>>>"'
                 sh 'echo echo "stage III..."'
-                sh 'snyk container test ubuntu || true'
+                sh 'snyk container test ubuntu --severity-threshold=high || true'
             }
         }
     }
