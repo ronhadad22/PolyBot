@@ -8,12 +8,13 @@ pipeline {
             bat "docker login --username $happytoast --password $myaccesstoken"
             bat "docker push happytoast/build_bot"
             bat "docker build ."
-       }
-   }
+            }
+       }//steps
+   }//stage
         stage('Build') {
             steps {
                 bat 'set'
             }
-        }
-    }
+        }//stage
+    }//stages
 }
