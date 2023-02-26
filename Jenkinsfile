@@ -8,6 +8,11 @@ agent any
  //   parameters([choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce')]), 
  //   pipelineTriggers([githubPush()])
  //   }
+     docker {
+        image 'jenkins-agent:latest'
+        args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+    }
+
     stages {
         stage('Build') {
             steps {
