@@ -25,6 +25,9 @@ pipeline {
         args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
         }
     }
+    environment {
+        SNYK_TOKEN = 'a077e745-b356-4b85-a532-e96adfd88d45'
+    }
 
     stages {
         stage('Build I PolyBot') {
@@ -54,6 +57,7 @@ pipeline {
         stage('Stage III PolyBot') {
             steps {
                 sh 'echo echo "stage III..."'
+                sh 'snyk container test ubuntu'
             }
         }
     }
