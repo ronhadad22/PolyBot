@@ -21,7 +21,7 @@ pipeline {
 
     agent {
     docker {
-        image 'docker'
+        image 'bibiefrat/ci_cd_1:docker-slave'
         args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
         }
     }
