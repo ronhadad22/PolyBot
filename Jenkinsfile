@@ -6,8 +6,9 @@ pipeline {
    withCredentials([usernamePassword(credentialsId: 'DockerTokenID', passwordVariable: 'myaccesstoken', usernameVariable: 'happytoast')]) {
     // some block
             bat "docker login --username $happytoast --password $myaccesstoken"
-            bat "docker build ."
-            bat "docker push happytoast/build_bot"
+            bat "docker build -t build_bot:${BUILD_NUMBER} ."
+            bat "docker tag build_bot:${BUILD_NUMBER} happytoast/build_bot:${BUILD_NUMBER}"
+            bat "docker push happytoast/build_bot:${BUILD_NUMBER}"
             }
        }//steps
    }//stage
