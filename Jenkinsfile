@@ -26,7 +26,8 @@ pipeline {
         }
     }
     environment {
-              SNYK_TOKEN = credentials('synk_token')
+    // get the snyk token from the jenkins general credentials
+        SNYK_TOKEN = credentials('synk_token')
     }
 
     stages {
