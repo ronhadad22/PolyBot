@@ -1,6 +1,10 @@
 pipeline {
 agent any 
-
+    oprions{
+    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '80', numToKeepStr: '100')), 
+    disableConcurrentBuilds(), parameters([choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce')]), 
+    pipelineTriggers([githubPush()])])
+    }
     stages {
         stage('Build') {
             steps {
