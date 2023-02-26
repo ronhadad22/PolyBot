@@ -4,7 +4,6 @@ pipeline {
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10'))
     disableConcurrentBuilds()
 
-    pipelineTriggers([githubPush()])
    }
     agent{
      docker {
