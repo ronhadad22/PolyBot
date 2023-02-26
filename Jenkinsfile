@@ -26,7 +26,9 @@ pipeline {
         }
     }
     environment {
-        SNYK_TOKEN = 'a077e745-b356-4b85-a532-e96adfd88d45'
+        withCredentials([string(credentialsId: 'synk_token', variable: 'token')]) {
+        SNYK_TOKEN = ${token}
+        }
     }
 
     stages {
