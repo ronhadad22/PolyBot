@@ -57,7 +57,7 @@ pipeline {
         }
         stage('Stage III PolyBot') {
             steps {
-                sh '<<<<<<<<<<<<<< echo "testing with snyk>>>>>>>>>>>>>>>>>>>"'
+                sh 'echo " --------------- testing with snyk ---------------"'
                 sh 'echo echo "stage III..."'
                 sh 'snyk container test ubuntu --severity-threshold=high || true'
             }
