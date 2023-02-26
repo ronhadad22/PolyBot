@@ -32,7 +32,7 @@ pipeline {
 
             }
         }
-        stage('Stage II PolyBot') {
+        stage('Stage III PolyBot') {
             steps {
                 sh 'echo echo "stage III..."'
             }
