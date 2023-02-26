@@ -1,11 +1,12 @@
-pipeline {
-    options {
+options {
         buildDiscarder(logRotator(daysToKeepStr: '1'))
         disableConcurrentBuilds()
         timestamps()
         timeout(time: 10, unit: 'MINUTES')
     }
 
+
+pipeline {
 
     agent {
     docker {
