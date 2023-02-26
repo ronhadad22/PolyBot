@@ -3,7 +3,7 @@ pipeline {
     options{
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10'))
     disableConcurrentBuilds()
-    parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
+
     pipelineTriggers([githubPush()])
    }
     agent{
@@ -12,6 +12,9 @@ pipeline {
         args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
     }
     }
+    
+        parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
+
     stages {
         stage('Build') {
             steps {
