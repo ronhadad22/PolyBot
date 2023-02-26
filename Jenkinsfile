@@ -1,13 +1,11 @@
 pipeline {
-agent any 
 
- //   options{
- //   buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '30')),
- //   buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10')), 
- //   disableConcurrentBuilds(), 
- //   parameters([choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce')]), 
- //   pipelineTriggers([githubPush()])
- //   }
+    options{
+    buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10')), 
+    disableConcurrentBuilds(), 
+    parameters([choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce')]), 
+    pipelineTriggers([githubPush()])
+   }
      docker {
         image 'jenkins-agent:latest'
         args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
