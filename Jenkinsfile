@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+        docker {
+        image 'jenkins-agent:latest'
+        args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+    }
+
 
     stages {
         stage('Build') {
