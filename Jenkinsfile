@@ -21,4 +21,9 @@ pipeline {
             }
         }//stage
     }//stages
+ post {
+        always {
+            bat "docker rmi build_bot:${BUILD_NUMBER}"
+        }
+    }
 }
