@@ -1,3 +1,4 @@
+bat "set timestamp=%date:~10,4%%date:~4,2%%date:~7,2%%time:~0,2%%time:~3,2%%time:~6,2%"
 pipeline {
     agent any
      environment {
@@ -15,7 +16,6 @@ pipeline {
    withCredentials([usernamePassword(credentialsId: 'DockerTokenID', passwordVariable: 'myaccesstoken', usernameVariable: 'happytoast')]) {
     // some block
             bat "docker login --username $happytoast --password $myaccesstoken"
-            bat "set timestamp=%date:~10,4%%date:~4,2%%date:~7,2%%time:~0,2%%time:~3,2%%time:~6,2%"
             bat "docker build -t build_bot:${timestamp} ."
             bat "docker tag build_bot:${timestamp} happytoast/build_bot:${timestamp}"
             bat "docker push happytoast/build_bot:${timestamp}"
@@ -30,7 +30,6 @@ pipeline {
     }//stages
  post {
         always {
-            bat "set timestamp=%date:~10,4%%date:~4,2%%date:~7,2%%time:~0,2%%time:~3,2%%time:~6,2%"
             bat "docker rmi build_bot:${timestamp}"
             bat "docker rmi happytoast/build_bot:${timestamp}"
         }
