@@ -14,12 +14,14 @@ pipeline {
    steps {
    withCredentials([usernamePassword(credentialsId: 'DockerTokenID', passwordVariable: 'myaccesstoken', usernameVariable: 'happytoast')]) {
     // some block
+    script {
             bat "docker login --username $happytoast --password $myaccesstoken"
             bat "def timestamp = new Date().format('yyyyMMddHHmmss')"
             bat "docker build -t build_bot:${timestamp} ."
             bat "docker tag build_bot:${timestamp} happytoast/build_bot:${timestamp}"
             bat "docker push happytoast/build_bot:${timestamp}"
-            }
+            }//script
+           }
        }//steps
    }//stage
         stage('Build') {
@@ -30,9 +32,11 @@ pipeline {
     }//stages
  post {
         always {
+        script {
             bat "def timestamp = new Date().format('yyyyMMddHHmmss')"
             bat "docker rmi build_bot:${timestamp}"
             bat "docker rmi happytoast/build_bot:${timestamp}"
+            }//script
         }
     }
 }
