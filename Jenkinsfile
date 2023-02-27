@@ -3,6 +3,11 @@ pipeline {
      environment {
         MY_GLOBAL_VARIABLE = 'some value'
     }
+    options {
+    buildDiscarder(logRotator(daysToKeepStr: '30'))
+    disableConcurrentBuilds()
+    timestamps()
+}
     stages {
         stage('Build Bot app') {
    steps {
