@@ -1,11 +1,11 @@
-bat "set timestamp=%date:~10,4%%date:~4,2%%date:~7,2%%time:~0,2%%time:~3,2%%time:~6,2%"
 pipeline {
     agent any
      environment {
         MY_GLOBAL_VARIABLE = 'some value'
+        timestamp = '%date:~10,4%%date:~4,2%%date:~7,2%%time:~0,2%%time:~3'
     }
     options {
-    buildDiscarder(logRotator(daysToKeepStr: '30'))
+    buildDiscarder(logRotator(daysToKeepStr: '7'))
     disableConcurrentBuilds()
     timestamps()
         timeout(time: 10, unit: 'MINUTES')
@@ -30,7 +30,6 @@ pipeline {
     }//stages
  post {
         always {
-            bat "docker rmi build_bot:${timestamp}"
             bat "docker rmi happytoast/build_bot:${timestamp}"
         }
     }
