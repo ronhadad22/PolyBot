@@ -1,5 +1,8 @@
 pipeline {
     agent any
+     environment {
+        MY_GLOBAL_VARIABLE = 'some value'
+    }
     stages {
         stage('Build Bot app') {
    steps {
