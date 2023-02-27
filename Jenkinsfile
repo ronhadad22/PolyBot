@@ -7,6 +7,7 @@ pipeline {
     buildDiscarder(logRotator(daysToKeepStr: '30'))
     disableConcurrentBuilds()
     timestamps()
+        timeout(time: 10, unit: 'MINUTES')
 }
     stages {
         stage('Build Bot app') {
@@ -14,9 +15,10 @@ pipeline {
    withCredentials([usernamePassword(credentialsId: 'DockerTokenID', passwordVariable: 'myaccesstoken', usernameVariable: 'happytoast')]) {
     // some block
             bat "docker login --username $happytoast --password $myaccesstoken"
-            bat "docker build -t build_bot:${BUILD_NUMBER} ."
-            bat "docker tag build_bot:${BUILD_NUMBER} happytoast/build_bot:${BUILD_NUMBER}"
-            bat "docker push happytoast/build_bot:${BUILD_NUMBER}"
+            def timestamp = new Date().format('yyyyMMddHHmmss')
+            bat "docker build -t build_bot:${timestamp} ."
+            bat "docker tag build_bot:${timestamp} happytoast/build_bot:${timestamp}"
+            bat "docker push happytoast/build_bot:${timestamp}"
             }
        }//steps
    }//stage
@@ -28,7 +30,9 @@ pipeline {
     }//stages
  post {
         always {
-            bat "docker rmi build_bot:${BUILD_NUMBER}"
+            def timestamp = new Date().format('yyyyMMddHHmmss')
+            bat "docker rmi build_bot:${timestamp}"
+            bat "docker rmi happytoast/build_bot:${timestamp}"
         }
     }
 }
