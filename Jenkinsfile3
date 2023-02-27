@@ -4,12 +4,12 @@ pipeline {
     stages {
         stage('Unittest') {
             steps {
-                echo "testing!!"
+                echo "testing!!!"
             }
         }
         stage('Functional test') {
             steps {
-                echo "testing!!"
+                echo "testing!!!"
             }
         }
     }
