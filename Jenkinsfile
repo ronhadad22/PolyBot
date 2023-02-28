@@ -4,15 +4,18 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-               withCredentials([usernamePassword(credentialsId: 'avijw96', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-               sh "sudo docker build -t avijdocker/PolyBot-${env.Build_NUMBER} ."
-               sh "sudo docker login --username $user --password $pass"
-               sh "sudo docker push avijdocker/PolyBot-${env.Build_NUMBER}"
+                withCredentials([usernamePassword(credentialsId: 'git-hub-ron', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
-
-
-
-               sh 'echo building...'
+                  sh "sudo docker build -t ronhad/private-course:poly-bot-${env.BUILD_NUMBER} . "
+                  sh "sudo docker login --username $user --password $pass"
+                  sh "sudo docker push ronhad/private-course:poly-bot-${env.BUILD_NUMBER}"
+ //               sh '''
+ //               docker login --username $user --password $pass
+ //               docker build ...
+ //               docker tag ...
+ //               docker push ...
+ //          '''
+                }
             }
         }
         stage('Stage II') {
@@ -26,5 +29,4 @@ pipeline {
             }
         }
     }
-    }
-
+}
