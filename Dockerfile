@@ -11,5 +11,6 @@ CMD ["python3", "bot.py"]
 
 # Second stage - Copy artifacts to the Jenkins agent image
 FROM jenkins/agent
+COPY --from=docker /usr/local/bin/docker /usr/local/bin/
 WORKDIR /app
 COPY --from=python-builder /app /app
