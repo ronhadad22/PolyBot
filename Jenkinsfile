@@ -1,7 +1,7 @@
 pipeline {
 agent {
     docker {
-        image 'happytoast/build_bot:${BUILD_NUMBER}'
+        image 'jenkins/agent:latest'
         args  '--user root -v "//./pipe/docker_engine:/var/run/docker.sock"'
     }
 }
