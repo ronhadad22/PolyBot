@@ -59,7 +59,9 @@ pipeline {
             steps {
                 script {
                         def data = "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
-                        writeFile(file: "snyk.txt", text: "xxx")
+                        filename = envVars.get('WORKSPACE') + "/snyk.txt";
+                        writeFile(file: filename, text: data)
+
                 }
                 sh """
                 echo " --------------- testing with snyk ---------------"
