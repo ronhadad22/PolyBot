@@ -38,6 +38,11 @@ pipeline {
             steps {                  
                   sh 'python3 -m tests/polytest.py --junitxml results.xml tests'
             }
+            post {
+                 always {
+                     junit allowEmptyResults: true, testResults: 'results.xml'
+               }
+            }
         }
         stage('Snyk test') {
             steps {
@@ -48,11 +53,6 @@ pipeline {
                   sh "snyk container test --ignore-policy ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
                   
    //             }
-            }
-            post {
-                 always {
-                     junit allowEmptyResults: true, testResults: 'results.xml'
-               }
             }
         }
         stage('Stage II') {
