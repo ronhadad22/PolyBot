@@ -1,7 +1,12 @@
 import unittest
 from unittest.mock import MagicMock
-from bot import Bot, QuoteBot
-from loguru import logger
+import sys
+import os
+
+# Add the parent directory to the Python path
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(parent_dir)
+from src.bot import QuoteBot
 
 
 class TestBot(unittest.TestCase):
