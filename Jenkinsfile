@@ -14,6 +14,9 @@ pipeline {
     
         parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
 
+    environment {
+        SNYK_TOKEN = credentials('snyk-token')
+    }
     stages {
         stage('Build') {
             steps {
@@ -34,7 +37,7 @@ pipeline {
         stage('Test') {
             steps {
                 withCredentials([string(credentialsId: 'snyk-token', variable: 'TOKEN')]) {
-                  sh "export SNYK_TOKEN=$TOKEN"
+   //               sh "export SNYK_TOKEN=$TOKEN"
                   sh 'snyk container test ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile'
                   
                 }
