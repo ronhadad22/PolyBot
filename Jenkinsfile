@@ -36,7 +36,8 @@ pipeline {
         }
         stage('unit test') {
             steps {                  
-                  sh 'python3 -m tests/polytest.py --junitxml results.xml tests'
+                sh 'pip install --no-cache-dir -r requirements.txt'  
+                sh 'python3 -m tests/polytest.py --junitxml results.xml tests'
             }
             post {
                  always {
