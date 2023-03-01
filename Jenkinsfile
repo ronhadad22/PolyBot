@@ -36,11 +36,11 @@ pipeline {
         }
         stage('Test') {
             steps {
-                withCredentials([string(credentialsId: 'snyk-token', variable: 'TOKEN')]) {
+   //             withCredentials([string(credentialsId: 'snyk-token', variable: 'TOKEN')]) {
    //               sh "export SNYK_TOKEN=$TOKEN"
                   sh 'snyk container test ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile'
                   
-                }
+   //             }
             }
         }
         stage('Stage II') {
