@@ -12,6 +12,10 @@ pipeline {
     stages {
           stage('Build') {
             steps {
+                options {
+                  timeout(time: 10, unit: 'MINUTES')
+                  }
+
                 withCredentials([usernamePassword(credentialsId: 'github-login', passwordVariable: 'pass', usernameVariable: 'user'), string(credentialsId: 'telegram-token', variable: 'TELEGRAM_TOKEN')]) {
                     sh "echo $pass |  sudo -S docker build --build-arg TELEGRAM_TOKEN=$TELEGRAM_TOKEN -t kubealon/private-course:poly-bot-${env.BUILD_NUMBER} ."
                     withCredentials([usernamePassword(credentialsId: 'docker-login', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
