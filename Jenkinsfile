@@ -59,7 +59,7 @@ pipeline {
             steps {
                 script {
                         def data = "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
-                        filename = envVars.get('WORKSPACE') + "/snyk.txt";
+                        filename = $env.WORKSPACE + "/snyk.txt";
                         writeFile(file: filename, text: data)
 
                 }
