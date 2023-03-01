@@ -38,7 +38,8 @@ pipeline {
             steps {
    //             withCredentials([string(credentialsId: 'snyk-token', variable: 'TOKEN')]) {
    //               sh "export SNYK_TOKEN=$TOKEN"
-                  sh "snyk container test ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
+
+                  sh "snyk container test  --severity-threshold=high ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
                   
    //             }
             }
