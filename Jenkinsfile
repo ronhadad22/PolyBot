@@ -26,12 +26,6 @@ pipeline {
                 sh 'echo "stage III..."'
             }
         }
-        post {
-        always {
-            // Cleanup Docker images from the disk
-            sh "sudo docker system prune -af"
-        }
-    }
-}
+       
     }
 }
