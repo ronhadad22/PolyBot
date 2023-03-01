@@ -58,9 +58,10 @@ pipeline {
         stage('Stage II PolyBot - testing with snyk plybot image') {
             steps {
                 script {
-                        def data = "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
-                        filename = env.WORKSPACE + "/snyk.txt";
-                        writeFile(file: filename, text: data)
+                        //def data = "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
+                        //filename = env.WORKSPACE + "/snyk.txt";
+                        //writeFile(file: filename, text: data)
+                        sh 'echo "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871" > snyk.txt'
 
                 }
                 sh """
