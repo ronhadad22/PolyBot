@@ -80,7 +80,7 @@ pipeline {
         stage('Stage IV PolyBot - UiTests') {
             steps {
                     sh "echo 'do some tests!!!'; sleep 2"
-                    def ret=sh(returnStdout: true, script: 'docker exec ${CONT_ID} pytest -v  polytest.py').trim()
+                    ret=sh(returnStdout: true, script: 'docker exec ${CONT_ID} pytest -v  polytest.py').trim()
                     println ret
                    }
         }
