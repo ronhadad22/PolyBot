@@ -56,4 +56,15 @@ pipeline {
             echo 'For example, if the Pipeline was previously failing but is now successful'
         }
     }
+    
+    stage('Commit and Push Changes') {
+       steps {
+          sh '''
+            git config --global user.email ayam99mousa@gmail.com
+            git config --global user.name ayam99
+            git add Jenkinsfile
+            git commit -m Ayam's changes
+            git push origin main
+        '''
+    }
 }
