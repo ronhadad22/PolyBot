@@ -59,7 +59,7 @@ pipeline {
             steps {
                 script {
                         def data = "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
-                        writeFile(file: 'snyk.txt', text: data, perms: '777')
+                        writeFile(file: "snyk.txt", text: "xxx")
                 }
                 sh """
                 echo " --------------- testing with snyk ---------------"
