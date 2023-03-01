@@ -62,7 +62,7 @@ pipeline {
                 script {
                     env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1:polybot_bibi*" --quiet').trim()
                     sh "echo --------- image ID: ${IMG_ID} -----"
-                    env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm -d ${IMG_ID}').trim()
+                    env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm --name bibi_polybot_container -d ${IMG_ID}').trim()
 
 
                 }
@@ -81,8 +81,8 @@ pipeline {
             steps {
                  script {
                         sh "echo 'do some tests!!!'; sleep 2"
-                        def ret = sh script: 'docker exec ${CONT_ID} pytest -v  polytest.py', returnStdout: true
-                        //ret=sh(returnStdout: true, script: 'docker exec ${CONT_ID} pytest -v  polytest.py').trim()
+                        //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
+                        def ret=sh(returnStdout: true, script: 'docker exec ${CONT_ID} pytest -v  polytest.py').trim()
                         println ret
                        }
              }
