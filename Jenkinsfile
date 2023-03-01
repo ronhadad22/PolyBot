@@ -34,7 +34,12 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
+        stage('unit test') {
+            steps {                  
+                  sh 'python3 -m tests/polytest.py --junitxml results.xml tests'
+            }
+        }
+        stage('Snyk test') {
             steps {
    //             withCredentials([string(credentialsId: 'snyk-token', variable: 'TOKEN')]) {
    //               sh "export SNYK_TOKEN=$TOKEN"
@@ -43,6 +48,11 @@ pipeline {
                   sh "snyk container test --ignore-policy ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
                   
    //             }
+            }
+            post {
+                 always {
+                     junit allowEmptyResults: true, testResults: 'results.xml'
+               }
             }
         }
         stage('Stage II') {
