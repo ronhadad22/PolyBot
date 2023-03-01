@@ -59,7 +59,7 @@ pipeline {
             steps {
                 sh """
                 echo " --------------- testing with snyk ---------------"
-                sh "snyk container test bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} --file=Dockerfile --severity-threshold=high || true"
+                snyk container test bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} --file=Dockerfile --severity-threshold=high || true
                 """
             }
         }
