@@ -63,6 +63,7 @@ pipeline {
                         //writeFile(file: filename, text: data)
                         sh 'echo "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871" > snyk.txt'
                         sh "cat snyk.txt"
+                        sh 'while IFS= read -r line; do echo $line; done < snyk.txt'
 
                 }
                 sh """
