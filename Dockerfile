@@ -1,16 +1,26 @@
-FROM python:3.9.16-slim
+FROM amazonlinux:2 as installer
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN yum update -y \
+  && yum install -y unzip \
+  && unzip awscliv2.zip \
+  && ./aws/install --bin-dir /aws-cli-bin/
 
-ARG TELEGRAM_TOKEN
+RUN mkdir /snyk && cd /snyk \
+    && curl https://static.snyk.io/cli/v1.666.0/snyk-linux -o snyk \
+    && chmod +x ./snyk
 
-WORKDIR /app
+FROM jenkins/agent
+COPY --from=docker /usr/local/bin/docker /usr/local/bin/
+COPY --from=installer /usr/local/aws-cli/ /usr/local/aws-cli/
+COPY --from=installer /aws-cli-bin/ /usr/local/bin/
+COPY --from=installer /snyk/ /usr/local/bin/
 
-COPY requirements.txt requirements.txt
 
-RUN pip3 install -r requirements.txt
-
-COPY . .
-
-# Set the Telegram token using the build arg
-RUN echo $TELEGRAM_TOKEN > .telegramToken
-
-CMD ["python3", "bot.py"]
+#FROM python:3.9.16-slim
+#ARG TELEGRAM_TOKEN
+#WORKDIR /app
+#COPY requirements.txt requirements.txt
+#RUN pip3 install -r requirements.txt
+#COPY . .
+#RUN echo $TELEGRAM_TOKEN > .telegramToken
+#CMD ["python3", "bot.py"]
