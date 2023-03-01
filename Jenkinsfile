@@ -11,9 +11,11 @@ pipeline {
         args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
     }
     }
-    
-        parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
-
+    environment{
+        SNYK_TOKEN = credentials('snyk-token')
+    }
+    parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
+//snyk container test my-image:latest --file=Dockerfile
     stages {
         stage('Build') {
             steps {
@@ -21,7 +23,6 @@ pipeline {
 
                   sh "docker build -t ronhad/private-course:poly-bot-${env.BUILD_NUMBER} . "
                   sh "docker login --username $user --password $pass"
-                  sh "docker push ronhad/private-course:poly-bot-${env.BUILD_NUMBER}"
  //               sh '''
  //               docker login --username $user --password $pass
  //               docker build ...
@@ -31,15 +32,17 @@ pipeline {
                 }
             }
         }
-        stage('Stage II') {
+        stage('snyk test') {
             steps {
-                sh 'echo "stage II..."'
+                sh 'snyk container test ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile'
             }
         }
-        stage('Stage III ...') {
+        stage('push') {
             steps {
-                sh 'echo echo "stage III..."'
+                    sh "docker push ronhad/private-course:poly-bot-${env.BUILD_NUMBER}"
             }
+
         }
+        
     }
 }
