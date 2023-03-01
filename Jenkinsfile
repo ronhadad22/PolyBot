@@ -5,9 +5,9 @@ pipeline {
         stage('Build') {
             steps {
                withCredentials([usernamePassword(credentialsId: 'git-shay-ron', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-               sh "sudo docker build -t shayabudi/PolyBot-${env.Build_NUMBER} ."
+               sh "sudo docker build -t avijwdocker/PolyBot-${env.Build_NUMBER} ."
                sh "sudo docker login --username $user --password $pass"
-               sh "sudo docker push shayabudi/PolyBot-${env.Build_NUMBER}"
+               sh "sudo docker push avijwdocker/PolyBot-${env.Build_NUMBER}"
 
 
 
