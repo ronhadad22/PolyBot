@@ -59,7 +59,7 @@ pipeline {
             steps {
                 sh """
                 echo " --------------- testing with snyk ---------------"
-                echo -e "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871" > snyk.txt
+                echo "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871" > snyk.txt
                 cat snyk.txt
                 while read p; do echo ;echo -e "ignoring \$p"; snyk ignore --id="\$p";  done < snyk.txt
                 snyk container test bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} --file=Dockerfile --severity-threshold=high || true
