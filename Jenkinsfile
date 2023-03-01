@@ -57,6 +57,10 @@ pipeline {
 
         stage('Stage II PolyBot - testing with snyk plybot image') {
             steps {
+                script {
+                        def data = "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
+                        writeFile(file: 'snyk.txt', text: data)
+                }
                 sh """
                 echo " --------------- testing with snyk ---------------"
                 snyk container test bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} --file=Dockerfile --severity-threshold=high || true
