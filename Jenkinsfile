@@ -67,11 +67,11 @@ pipeline {
 
         stage('Stage III PolyBot - run container') {
             steps {
-                sh 'echo "stage II..."'
+                sh 'echo "Running ploybot container"'
                 script {
-                    env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1:polybot_bibi*" --quiet').trim()
-                    sh "echo --------- image ID: ${IMG_ID} -----"
-                    env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm --name bibi_polybot_container -d ${IMG_ID}').trim()
+                    //env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1:polybot_bibi*" --quiet').trim()
+                    //sh "echo --------- image ID: ${IMG_ID} -----"
+                    env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm --name bibi_polybot_container -d  bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}').trim()
                 }
 
             }
