@@ -50,26 +50,33 @@ pipeline {
                 docker login -u $user -p $pass
                 docker build -t bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} .
                 docker push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}
-                echo " --------------- testing with snyk ---------------"
-                snyk container test bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} --file=Dockerfile --severity-threshold=high || true
            """
                 }
             }
         }
-        stage('Stage II PolyBot - run container') {
+
+        stage('Stage II PolyBot - testing with snyk plybot image') {
+            steps {
+                sh """
+                echo " --------------- testing with snyk ---------------"
+                snyk container test bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} --file=Dockerfile --severity-threshold=high || true
+                 """
+            }
+        }
+
+
+        stage('Stage III PolyBot - run container') {
             steps {
                 sh 'echo "stage II..."'
                 script {
                     env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1:polybot_bibi*" --quiet').trim()
                     sh "echo --------- image ID: ${IMG_ID} -----"
                     env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm --name bibi_polybot_container -d ${IMG_ID}').trim()
-
-
                 }
 
             }
         }
-        stage('Stage III PolyBot - testing with snyk') {
+        stage('Stage IV PolyBot - testing UBUNTU with snyk') {
             steps {
                 sh 'echo " --------------- testing with snyk ---------------"'
                 sh 'echo echo "stage III..."'
@@ -77,7 +84,7 @@ pipeline {
             }
         }
 
-        stage('Stage IV PolyBot - UiTests') {
+        stage('Stage V PolyBot - UniTests') {
             steps {
                  script {
                         sh "echo 'do some tests!!!'; sleep 2"
@@ -89,7 +96,7 @@ pipeline {
         }
 
 
-        stage('Stage V PolyBot - stop container') {
+        stage('Stage VI PolyBot - stop container') {
             steps {
                     sh "docker stop ${env.CONT_ID}"
                    }
