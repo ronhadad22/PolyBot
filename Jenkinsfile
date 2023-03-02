@@ -63,7 +63,7 @@ pipeline {
                         //writeFile(file: filename, text: data)
                         sh 'echo "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871" > snyk.txt'
                         sh "cat snyk.txt"
-                        sh "export SNYK_TOKEN=a077e745-b356-4b85-a532-e96adfd88d45 ; snyk ignore --id=\\'SNYK-DEBIAN11-AOM-1298721\\'"
+                        sh "snyk auth ; snyk ignore --id=\\'SNYK-DEBIAN11-AOM-1298721\\'"
                         //sh 'while IFS= read -r line; do snyk ignore --id=\\\'$line\\\'; done < snyk.txt'
 
                 }
