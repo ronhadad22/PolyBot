@@ -68,6 +68,8 @@ pipeline {
                         def date = new Date()
                         def data = "Hello World\nSecond line\n" + date
                         writeFile(file: 'zorg.txt', text: data)
+                        def data = "NYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
+                        writeFile(file: 'snyk2.txt.txt', text: data)
                         sh "ls -l"
                 }
                 sh """
