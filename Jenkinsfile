@@ -69,7 +69,8 @@ pipeline {
                         def data = "Hello World\nSecond line\n" + date
                         writeFile(file: 'zorg.txt', text: data)
                         def data2 = "NYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
-                        writeFile(file: 'snyk2.txt.txt', text: data2)
+                        writeFile(file: 'snyk2.txt', text: data2)
+                        sh 'while IFS= read -r line; do snyk auth $SNYK_TOKEN  ; snyk ignore --id=\\\'$line\\\'; done < snyk2.txt'
                         sh "ls -l"
                 }
                 sh """
