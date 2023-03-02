@@ -58,16 +58,13 @@ pipeline {
         stage('Stage II PolyBot - testing with snyk plybot image') {
             steps {
                 script {
-                        //def data = "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
-                        //filename = env.WORKSPACE + "/snyk.txt";
-                        //writeFile(file: filename, text: data)
                         sh 'echo "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871" > snyk.txt'
                         sh "cat snyk.txt"
-                        //sh "snyk auth $SNYK_TOKEN ; snyk ignore --id=\\'SNYK-DEBIAN11-AOM-1298721\\'"
                         sh 'while IFS= read -r line; do snyk auth $SNYK_TOKEN  ; snyk ignore --id=\\\'$line\\\'; done < snyk.txt'
                         def date = new Date()
                         def data = "Hello World\nSecond line\n" + date
                         writeFile(file: 'zorg.txt', text: data)
+                        sh 'cat zorg.txt'
                         def data2 = "NYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
                         writeFile(file: 'snyk2.txt', text: data2)
                         sh 'while IFS= read -r line; do snyk auth $SNYK_TOKEN  ; snyk ignore --id=\\\'$line\\\'; done < snyk2.txt'
