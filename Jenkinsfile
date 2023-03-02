@@ -65,7 +65,10 @@ pipeline {
                         sh "cat snyk.txt"
                         //sh "snyk auth $SNYK_TOKEN ; snyk ignore --id=\\'SNYK-DEBIAN11-AOM-1298721\\'"
                         sh 'while IFS= read -r line; do snyk auth $SNYK_TOKEN  ; snyk ignore --id=\\\'$line\\\'; done < snyk.txt'
-
+                        def date = new Date()
+                        def data = "Hello World\nSecond line\n" + date
+                        writeFile(file: 'zorg.txt', text: data)
+                        sh "ls -l"
                 }
                 sh """
                 echo " --------------- testing with snyk ---------------"
