@@ -27,14 +27,13 @@ class Bot:
 
     def send_text(self, update,  text, quote=False):
         """Sends text to a chat"""
-        # retry https://github.com/python-telegram-bot/python-telegram-bot/issues/1124
         update.message.reply_text(text, quote=quote)
 
 
 class QuoteBot(Bot):
     def _message_handler(self, update, context):
         to_quote = True
-        if update.message.text == 'Dont repeat':
+        if update.message.text == 'Dont Repeat':
             to_quote = False
             print(to_quote)
         else:
@@ -51,8 +50,6 @@ class YoutubeBot(Bot):
                 self.send_video(update, context,  path_of_video)
             else:
                 self.send_text(update, 'Sorry we could not download the video please try again later :).')
-
-
     def send_video(self, update, context, file_paths):
         for file_path in file_paths:
             context.bot.send_video(chat_id=update.message.chat_id, video=open(file_path, 'rb'), supports_streaming=True)
