@@ -139,17 +139,17 @@ pipeline {
             }//parallel
         }//stage
 
-//         stage('Stage VII PolyBot - Push Container') {
-//             agent {
-//                     docker {
-//                         image 'bibiefrat/ci_cd_1:docker-slave'
-//                         args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
-//                     }
-//                 }
-//             steps {
-//                     sh " docker push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}"
-//                    }
-//         }
+        stage('Stage 6 --->  PolyBot - Push Container') {
+            agent {
+                    docker {
+                        image 'bibiefrat/ci_cd_1:docker-slave'
+                        args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+                    }
+                }
+            steps {
+                    sh " docker push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}"
+                   }
+        }
 
 
     }
