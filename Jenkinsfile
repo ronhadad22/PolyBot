@@ -109,7 +109,7 @@ pipeline {
         stage('Stage V PolyBot - Pylint and Unitest') {
             parallel {
                 stage('Pylint') {
-                agent any
+                //agent any
                     agent {
                         docker {
                             image 'bibiefrat/ci_cd_1:docker-slave'
@@ -130,7 +130,7 @@ pipeline {
 
 
                 stage('Unitest') {
-                    agent any
+                    //agent any
                     agent {
                         docker {
                             //image 'bibiefrat/ci_cd_1:docker-slave'
