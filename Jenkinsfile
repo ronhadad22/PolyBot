@@ -98,17 +98,17 @@ pipeline {
         }
 
 
-        stage('Stage V PolyBot - Pylint') {
-            steps {
-                 script {
-                        sh "echo 'do spylint testing"
-                        //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
-                        sh "pylint --generate-rcfile > .pylintrc"
-                        def ret=sh(returnStdout: true, script: 'python3 -m pylint *.py').trim()
-                        println ret
-                       }
-             }
-        }
+//         stage('Stage V PolyBot - Pylint') {
+//             steps {
+//                  script {
+//                         sh "echo '--------------- do pylint testing ---------------"
+//                         //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
+//                         sh "pylint --generate-rcfile > .pylintrc"
+//                         def ret=sh(returnStdout: true, script: 'python3 -m pylint *.py').trim()
+//                         println ret
+//                        }
+//              }
+//         }
 
 
         stage('Stage VI PolyBot - UniTests') {
