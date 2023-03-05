@@ -46,7 +46,6 @@ pipeline {
         stage('Build 0 PolyBot - requirments') {
             steps {
                 sh """
-
                 pip3 install --no-cache-dir -r requirements.txt
            """
             }
@@ -119,9 +118,10 @@ pipeline {
 //                     }//agent
                     steps {
                          script {
-                                    sh "echo 'pylist'"
+                                sh "echo 'pylist'"
                                 sh "echo '--------------- do pylint testing ---------------'"
                                 //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
+                                sh "pip3 install --no-cache-dir -r requirements.txt"
                                 sh "pylint --generate-rcfile > .pylintrc"
                                 def ret=sh(returnStdout: true, script: 'python3 -m pylint *.py || true').trim()
                                 println ret
