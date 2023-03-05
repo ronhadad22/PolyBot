@@ -155,7 +155,7 @@ pipeline {
     }
     post {
         always {
-        node(agent any)
+            agent any
             sh """
             echo "removing container"
             docker rmi -f bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}
