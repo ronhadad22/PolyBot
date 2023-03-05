@@ -33,7 +33,7 @@ pipeline {
                 sh """
                     echo $pass | sudo -S docker build \
                         --build-arg TELEGRAM_TOKEN=$TELEGRAM_TOKEN \
-                        -t chessshark1000/private-course:poly-bot-${env.BUILD_NUMBER} .
+                        -t kubealon/private-course:poly-bot-${env.BUILD_NUMBER} .
                 """
                 withCredentials([
                     usernamePassword(
@@ -53,7 +53,7 @@ pipeline {
                     """
                     sh """
                         echo $pass | sudo -S docker push \
-                            chessshark1000/private-course:poly-bot-${env.BUILD_NUMBER}
+                            kubealon/private-course:poly-bot-${env.BUILD_NUMBER}
                     """
                 }
             }
