@@ -106,7 +106,7 @@ pipeline {
 //         }
 
 
-        stage('Stage V PolyBot - Pylint and Unitest') {
+        stage('Stage V PolyBot - Pylint Unitest abd Snyk') {
             parallel {
                 stage('testing with Snyk plybot image') {
                     agent {
@@ -171,8 +171,20 @@ pipeline {
 //                     }//agent
                     steps {
                          script {
-                                   sh "echo 'Unitest'"
+                                sh "echo 'Unitest'"
                                 sh "echo 'do some tests!!!'; sleep 2"
+
+                                steps {
+                                    withCredentials([usernamePassword(credentialsId: 'docker_hub_ci_cd_repo', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                                    sh """
+                                    docker login -u $user -p $pass
+                                    docker build -t bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} .
+                               """
+                                    }
+                                }
+
+
+
                                 //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
                                 def ret=sh(returnStdout: true, script: 'docker exec bibi_polybot_container_${BUILD_ID} pytest -v  polytest.py').trim()
                                 println ret
@@ -198,6 +210,12 @@ pipeline {
         stage('Stage VII PolyBot - stop container') {
             steps {
                     sh "docker stop ${env.CONT_ID}"
+                   }
+        }
+
+        stage('Stage VII PolyBot - Push Container') {
+            steps {
+                    sh " docker push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}"
                    }
         }
 
