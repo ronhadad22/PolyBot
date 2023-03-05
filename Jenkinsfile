@@ -110,17 +110,17 @@ pipeline {
             parallel {
                 stage('Pylint') {
                 agent any
-//                     agent {
-//                         docker {
-//                             image 'bibiefrat/ci_cd_1:docker-slave'
-//                             args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
-//                         }//docker
-//                     }//agent
+                    agent {
+                        docker {
+                            image 'bibiefrat/ci_cd_1:docker-slave'
+                            args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+                        }//docker
+                    }//agent
                     steps {
                          script {
                                 sh "echo '--------------- do pylint testing ---------------'"
                                 //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
-                                sh "pip install pylint"
+                                sh "pip3 install pylint"
                                 sh "pylint --generate-rcfile > .pylintrc"
                                 def ret=sh(returnStdout: true, script: 'python3 -m pylint *.py || true').trim()
                                 println ret
@@ -131,13 +131,13 @@ pipeline {
 
                 stage('Unitest') {
                     agent any
-//                     agent {
-//                         docker {
-//                             //image 'bibiefrat/ci_cd_1:docker-slave'
-//                             image 'python'
-//                             args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
-//                         }// docker
-//                     }//agent
+                    agent {
+                        docker {
+                            //image 'bibiefrat/ci_cd_1:docker-slave'
+                            image 'python'
+                            args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+                        }// docker
+                    }//agent
                     steps {
                          script {
                                    sh "echo 'Unitest'"
