@@ -148,6 +148,7 @@ pipeline {
                 }
             steps {
                     withCredentials([usernamePassword(credentialsId: 'docker_hub_ci_cd_repo', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        sh "docker login -u $user -p $pass"
                         sh " docker push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}"
                     }
             }
