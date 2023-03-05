@@ -154,6 +154,12 @@ pipeline {
 
     }
     post {
+        agent {
+                docker {
+                    image 'bibiefrat/ci_cd_1:docker-slave'
+                    args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+                }
+            }
         always {
             sh """
             echo "removing container"
