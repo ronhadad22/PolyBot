@@ -106,29 +106,57 @@ pipeline {
         }
 
 
-        stage('Stage V PolyBot - Pylint') {
-            steps {
-                 script {
-                        sh "echo '--------------- do pylint testing ---------------'"
-                        //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
-                        sh "pylint --generate-rcfile > .pylintrc"
-                        def ret=sh(returnStdout: true, script: 'python3 -m pylint *.py || true').trim()
-                        println ret
-                       }
-             }
+        stage('Stage V PolyBot - Pylint and Unitest') {
+            parallel {
+                stage('Pylint') {
+                        agent {
+                            docker {
+                                image 'bibiefrat/ci_cd_1:docker-slave'
+                                args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+                            }
+                        }
+                    steps {
+                         script {
+                                sh "echo '--------------- do pylint testing ---------------'"
+                                //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
+                                sh "pylint --generate-rcfile > .pylintrc"
+                                def ret=sh(returnStdout: true, script: 'python3 -m pylint *.py || true').trim()
+                                println ret
+                               }
+                     }
+                }
+
+
+                stage('Unitest') {
+                        agent {
+                            docker {
+                                image 'bibiefrat/ci_cd_1:docker-slave'
+                                args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+                            }
+                        }
+                    steps {
+                         script {
+                                sh "echo 'do some tests!!!'; sleep 2"
+                                //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
+                                def ret=sh(returnStdout: true, script: 'docker exec bibi_polybot_container_${BUILD_ID} pytest -v  polytest.py').trim()
+                                println ret
+                               }
+                    }
+                }
+            }
         }
 
 
-        stage('Stage VI PolyBot - UniTests') {
-            steps {
-                 script {
-                        sh "echo 'do some tests!!!'; sleep 2"
-                        //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
-                        def ret=sh(returnStdout: true, script: 'docker exec bibi_polybot_container_${BUILD_ID} pytest -v  polytest.py').trim()
-                        println ret
-                       }
-             }
-        }
+//         stage('Stage VI PolyBot - UniTests') {
+//             steps {
+//                  script {
+//                         sh "echo 'do some tests!!!'; sleep 2"
+//                         //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
+//                         def ret=sh(returnStdout: true, script: 'docker exec bibi_polybot_container_${BUILD_ID} pytest -v  polytest.py').trim()
+//                         println ret
+//                        }
+//              }
+//         }
 
 
         stage('Stage VII PolyBot - stop container') {
