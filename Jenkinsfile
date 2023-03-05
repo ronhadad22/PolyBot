@@ -25,7 +25,7 @@ pipeline {
 //         args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
 //         }
 //     }
-    agent any
+    agent none
     environment {
     // get the snyk token from the jenkins general credentials
         SNYK_TOKEN = credentials('synk_token')
@@ -159,6 +159,6 @@ pipeline {
             echo "removing container"
             docker rmi -f bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}
             """
-        }// always
-    }// post
+        }
+    }
 }
