@@ -120,8 +120,8 @@ pipeline {
                          script {
                                 sh "echo '--------------- do pylint testing ---------------'"
                                 //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
-                                sh "pip3 install pylint"
-                                sh "sudo pylint --generate-rcfile > .pylintrc"
+                                sh "pip install pylint"
+                                sh "pylint --generate-rcfile > .pylintrc"
                                 def ret=sh(returnStdout: true, script: 'python3 -m pylint *.py || true').trim()
                                 println ret
                                 }//script
