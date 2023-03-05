@@ -6,7 +6,7 @@ pipeline {
                 stage('Test On Windows') {
                     agent any
                     steps {
-                        sh "ech 'run-tests.bat'"
+                        sh "echo 'run-tests.bat'"
                     }
 
                 }
