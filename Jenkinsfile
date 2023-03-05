@@ -104,7 +104,7 @@ pipeline {
                                 //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
                                 sh "pip3 install pylint"
                                 sh "pylint --generate-rcfile > .pylintrc"
-                                def ret=sh(returnStdout: true, script: 'python3 -m pylint *.py || true').trim()
+                                def ret=sh(returnStdout: true, script: 'python3 -m pylint -f parseable --reports=no *.py > pylint.log || true').trim()
                                 println ret
                                 }//script
                      } //step
