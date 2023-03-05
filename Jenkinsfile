@@ -13,7 +13,6 @@ pipeline {
     }
     
         parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
-   
     
 stages {
         stage('Build') {
@@ -32,7 +31,7 @@ stages {
                 }
             }
         }
-         
+    
     stage('Commit and Push Changes') {
        steps {
           sh '''
@@ -44,4 +43,5 @@ stages {
         '''
        }
     }
+  }
 }
