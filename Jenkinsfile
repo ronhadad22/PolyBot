@@ -109,12 +109,13 @@ pipeline {
         stage('Stage V PolyBot - Pylint and Unitest') {
             parallel {
                 stage('Pylint') {
-                    agent {
-                        docker {
-                            image 'bibiefrat/ci_cd_1:docker-slave'
-                            args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
-                        }//docker
-                    }//agent
+                agent any
+//                     agent {
+//                         docker {
+//                             image 'bibiefrat/ci_cd_1:docker-slave'
+//                             args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+//                         }//docker
+//                     }//agent
                     steps {
                          script {
                                 sh "echo '--------------- do pylint testing ---------------'"
@@ -128,13 +129,14 @@ pipeline {
 
 
                 stage('Unitest') {
-                    agent {
-                        docker {
-                            //image 'bibiefrat/ci_cd_1:docker-slave'
-                            image 'python'
-                            args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
-                        }// docker
-                    }//agent
+                    agent any
+//                     agent {
+//                         docker {
+//                             //image 'bibiefrat/ci_cd_1:docker-slave'
+//                             image 'python'
+//                             args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+//                         }// docker
+//                     }//agent
                     steps {
                          script {
                                 sh "echo 'do some tests!!!'; sleep 2"
