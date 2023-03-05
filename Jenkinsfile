@@ -25,7 +25,7 @@ pipeline {
 //         args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
 //         }
 //     }
-    agent any
+    agent none
     environment {
     // get the snyk token from the jenkins general credentials
         SNYK_TOKEN = credentials('synk_token')
@@ -44,6 +44,12 @@ pipeline {
 //             }
 
         stage('Stage 1 ---> Build PolyBot') {
+            agent {
+                docker {
+                    image 'bibiefrat/ci_cd_1:docker-slave'
+                    args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+                }
+            }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker_hub_ci_cd_repo', passwordVariable: 'pass', usernameVariable: 'user')]) {
                 sh """
@@ -133,13 +139,13 @@ pipeline {
             }//parallel
         }//stage
 
-//         stage('Stage VII PolyBot - stop container') {
-//             steps {
-//                     sh "docker stop ${env.CONT_ID}"
-//                    }
-//         }
-
         stage('Stage VII PolyBot - Push Container') {
+            agent {
+                    docker {
+                        image 'bibiefrat/ci_cd_1:docker-slave'
+                        args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+                    }
+                }
             steps {
                     sh " docker push bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}"
                    }
