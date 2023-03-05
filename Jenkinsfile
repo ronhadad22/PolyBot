@@ -19,7 +19,7 @@ pipeline {
         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
     }
 
-    agent {
+//    agent {
 //     docker {
 //         image 'bibiefrat/ci_cd_1:docker-slave'
 //         args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
@@ -63,27 +63,27 @@ pipeline {
             }
         }
 
-        stage('Stage II PolyBot - testing with snyk plybot image') {
-            steps {
-                script {
-                        sh 'echo "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871" > snyk.txt'
-                        sh "cat snyk.txt"
-                        sh 'while IFS= read -r line; do snyk auth $SNYK_TOKEN  ; snyk ignore --id=\\\'$line\\\'; done < snyk.txt'
-                        def date = new Date()
-                        def data = "Hello World\nSecond line\n" + date
-                        writeFile(file: 'zorg.txt', text: data)
-                        sh 'cat zorg.txt'
-                        def data2 = "NYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
-                        writeFile(file: 'snyk2.txt', text: data2)
-                        sh 'while IFS= read -r line; do snyk auth $SNYK_TOKEN  ; snyk ignore --id=\\\'$line\\\'; done < snyk2.txt'
-                        sh "ls -l"
-                }
-                sh """
-                echo " --------------- testing with snyk ---------------"
-                snyk container test bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} --file=Dockerfile --severity-threshold=high || true
-                """
-            }
-        }
+//         stage('Stage II PolyBot - testing with snyk plybot image') {
+//             steps {
+//                 script {
+//                         sh 'echo "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871" > snyk.txt'
+//                         sh "cat snyk.txt"
+//                         sh 'while IFS= read -r line; do snyk auth $SNYK_TOKEN  ; snyk ignore --id=\\\'$line\\\'; done < snyk.txt'
+//                         def date = new Date()
+//                         def data = "Hello World\nSecond line\n" + date
+//                         writeFile(file: 'zorg.txt', text: data)
+//                         sh 'cat zorg.txt'
+//                         def data2 = "NYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
+//                         writeFile(file: 'snyk2.txt', text: data2)
+//                         sh 'while IFS= read -r line; do snyk auth $SNYK_TOKEN  ; snyk ignore --id=\\\'$line\\\'; done < snyk2.txt'
+//                         sh "ls -l"
+//                 }
+//                 sh """
+//                 echo " --------------- testing with snyk ---------------"
+//                 snyk container test bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} --file=Dockerfile --severity-threshold=high || true
+//                 """
+//             }
+//         }
 
 
         stage('Stage III PolyBot - run container') {
@@ -97,17 +97,48 @@ pipeline {
 
             }
         }
-        stage('Stage IV PolyBot - testing UBUNTU with snyk') {
-            steps {
-                sh 'echo " --------------- testing with snyk ---------------"'
-                sh 'echo echo "stage III..."'
-                sh 'snyk container test ubuntu --severity-threshold=high || true'
-            }
-        }
+//         stage('Stage IV PolyBot - testing UBUNTU with snyk') {
+//             steps {
+//                 sh 'echo " --------------- testing with snyk ---------------"'
+//                 sh 'echo echo "stage III..."'
+//                 sh 'snyk container test ubuntu --severity-threshold=high || true'
+//             }
+//         }
 
 
         stage('Stage V PolyBot - Pylint and Unitest') {
             parallel {
+                agent {
+                        docker {
+                            image 'bibiefrat/ci_cd_1:docker-slave'
+                            args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+                        }//docker
+                    }//agent
+                stage('testing with Snyk plybot image') {
+                    steps {
+                        script {
+                                sh 'echo "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871" > snyk.txt'
+                                sh "cat snyk.txt"
+                                sh 'while IFS= read -r line; do snyk auth $SNYK_TOKEN  ; snyk ignore --id=\\\'$line\\\'; done < snyk.txt'
+                                def date = new Date()
+                                def data = "Hello World\nSecond line\n" + date
+                                writeFile(file: 'zorg.txt', text: data)
+                                sh 'cat zorg.txt'
+                                def data2 = "NYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871"
+                                writeFile(file: 'snyk2.txt', text: data2)
+                                sh 'while IFS= read -r line; do snyk auth $SNYK_TOKEN  ; snyk ignore --id=\\\'$line\\\'; done < snyk2.txt'
+                                sh "ls -l"
+                        }
+                        sh """
+                        echo " --------------- testing with snyk ---------------"
+                        snyk container test bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} --file=Dockerfile --severity-threshold=high || true
+                        """
+                    }
+                }
+
+
+
+
                 stage('Pylint') {
                 //agent any
                     agent {
