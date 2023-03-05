@@ -86,17 +86,17 @@ pipeline {
 //         }
 
 
-        stage('Stage III PolyBot - run container') {
-            steps {
-                sh 'echo "Running ploybot container"'
-                script {
-                    //env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1:polybot_bibi*" --quiet').trim()
-                    //sh "echo --------- image ID: ${IMG_ID} -----"
-                    env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm --name bibi_polybot_container_${BUILD_ID} -d  bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}').trim()
-                }
-
-            }
-        }
+//         stage('Stage III PolyBot - run container') {
+//             steps {
+//                 sh 'echo "Running ploybot container"'
+//                 script {
+//                     //env.IMG_ID=sh(returnStdout: true, script: 'docker images --filter="reference=bibiefrat/ci_cd_1:polybot_bibi*" --quiet').trim()
+//                     //sh "echo --------- image ID: ${IMG_ID} -----"
+//                     env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm --name bibi_polybot_container_${BUILD_ID} -d  bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}').trim()
+//                 }
+//
+//             }
+//         }
 //         stage('Stage IV PolyBot - testing UBUNTU with snyk') {
 //             steps {
 //                 sh 'echo " --------------- testing with snyk ---------------"'
@@ -135,10 +135,6 @@ pipeline {
                         """
                     }
                 }
-
-
-
-
                 stage('Pylint') {
                 //agent any
                     agent {
@@ -173,19 +169,9 @@ pipeline {
                          script {
                                 sh "echo 'Unitest'"
                                 sh "echo 'do some tests!!!'; sleep 2"
-
-                                steps {
-                                    withCredentials([usernamePassword(credentialsId: 'docker_hub_ci_cd_repo', passwordVariable: 'pass', usernameVariable: 'user')]) {
-                                    sh """
-                                    docker login -u $user -p $pass
-                                    docker build -t bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID} .
-                               """
-                                    }
-                                }
-
-
-
                                 //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
+                                sh "echo 'RUN CONTAINER'"
+                                env.CONT_ID=sh(returnStdout: true, script: 'docker run --rm --name bibi_polybot_container_${BUILD_ID} -d  bibiefrat/ci_cd_1:polybot_bibi_${BUILD_ID}').trim()
                                 def ret=sh(returnStdout: true, script: 'docker exec bibi_polybot_container_${BUILD_ID} pytest -v  polytest.py').trim()
                                 println ret
                                }//script
