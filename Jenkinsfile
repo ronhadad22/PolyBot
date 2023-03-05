@@ -26,7 +26,7 @@ pipeline {
            }
         stage('Stage III ...')  {
                    steps {
-                       sh "docker push ronhad/private-course:poly-bot-${env.BUILD_NUMBER}"
+                       sh "docker push ayam99/polybot:poly-bot-${env.BUILD_NUMBER}"
                    }
                }
            }
