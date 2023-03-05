@@ -108,13 +108,13 @@ pipeline {
 
         stage('Stage V PolyBot - Pylint and Unitest') {
             parallel {
-                agent {
-                        docker {
-                            image 'bibiefrat/ci_cd_1:docker-slave'
-                            args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
-                        }//docker
-                    }//agent
                 stage('testing with Snyk plybot image') {
+                    agent {
+                            docker {
+                                image 'bibiefrat/ci_cd_1:docker-slave'
+                                args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+                            }//docker
+                    }//agent
                     steps {
                         script {
                                 sh 'echo "SNYK-DEBIAN11-AOM-1300249\nSNYK-DEBIAN11-AOM-1298721\nSNYK-DEBIAN11-TIFF-3113871" > snyk.txt'
