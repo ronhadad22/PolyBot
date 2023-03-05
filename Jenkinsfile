@@ -124,7 +124,7 @@ pipeline {
 //                                 sh "pylint --generate-rcfile > .pylintrc"
 //                                 def ret=sh(returnStdout: true, script: 'python3 -m pylint *.py || true').trim()
 //                                 println ret
-//                                }//script
+                                }//script
                      } //step
                 }// stage
 
