@@ -3,3 +3,4 @@ youtube-dl>=2021.12.17
 loguru
 pytest
 unittest2
+pylint
