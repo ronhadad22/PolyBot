@@ -45,6 +45,7 @@ pipeline {
         stage('Build 0 PolyBot - requirments') {
             steps {
                 sh """
+
                 pip3 install --no-cache-dir -r requirements.txt
            """
             }
