@@ -130,14 +130,14 @@ pipeline {
 
 
                 stage('Unitest') {
-                    //agent any
-                    agent {
-                        docker {
-                            //image 'bibiefrat/ci_cd_1:docker-slave'
-                            image 'python'
-                            args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
-                        }// docker
-                    }//agent
+                    agent any
+//                     agent {
+//                         docker {
+//                             //image 'bibiefrat/ci_cd_1:docker-slave'
+//                             image 'python'
+//                             args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+//                         }// docker
+//                     }//agent
                     steps {
                          script {
                                    sh "echo 'Unitest'"
