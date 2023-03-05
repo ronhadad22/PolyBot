@@ -105,6 +105,7 @@ pipeline {
                                 sh "pip3 install pylint"
                                 sh "pylint --generate-rcfile > .pylintrc"
                                 def ret=sh(returnStdout: true, script: 'python3 -m pylint -f parseable --reports=no *.py > pylint.log || true').trim()
+                                stash name: "first-stash", includes: "pylint.log"
                                 println ret
                                 }//script
                      } //step
@@ -162,6 +163,7 @@ pipeline {
             echo " --------------- removing container ---------------"
             docker rmi -f bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}
             """
+            unstash "first-stash"
         }
     }
 }
