@@ -116,7 +116,7 @@ pipeline {
                  script {
                         sh "echo 'do some tests!!!'; sleep 2"
                         //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
-                        def ret=sh(returnStdout: true, script: 'docker exec bibi_polybot_container pytest -v  polytest.py').trim()
+                        def ret=sh(returnStdout: true, script: 'docker exec bibi_polybot_container_${BUILD_ID} pytest -v  polytest.py').trim()
                         println ret
                        }
              }
