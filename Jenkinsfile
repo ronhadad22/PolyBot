@@ -20,12 +20,12 @@ pipeline {
     }
 
     agent {
-    docker {
-        image 'bibiefrat/ci_cd_1:docker-slave'
-        args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
-        }
-    }
-    //agent any
+//     docker {
+//         image 'bibiefrat/ci_cd_1:docker-slave'
+//         args  '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+//         }
+//     }
+    agent any
     environment {
     // get the snyk token from the jenkins general credentials
         SNYK_TOKEN = credentials('synk_token')
