@@ -2,18 +2,17 @@ pipeline {
 
     options{
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10'))
-    disableConcurrentBuilds()
-
-   }
+    disableConcurrentBuilds() 
+    }
+    
     agent{
      docker {
         image 'jenkins-agent:latest'
-        args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-    }
+        args  '--user root -v /var/run/docker.sock:/var/run/docker.sock' 
+     }
     }
     
         parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
-
     stages {
         stage('Build') {
             steps {
@@ -31,6 +30,7 @@ pipeline {
                 }
             }
         }
+    ################################################################
         
         stage('Test') {
             steps {
@@ -38,6 +38,9 @@ pipeline {
             }
         }
     }
+    
+    ##############################################################################
+    
     post {
         always {
             echo 'This will always run'
@@ -57,6 +60,8 @@ pipeline {
         }
     }
     
+   ####################################################################################
+    
     stage('Commit and Push Changes') {
        steps {
           sh '''
@@ -66,5 +71,6 @@ pipeline {
             git commit -m Ayam's changes
             git push origin main
         '''
+       }
     }
 }
