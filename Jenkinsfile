@@ -118,12 +118,13 @@ pipeline {
 //                     }//agent
                     steps {
                          script {
-                                sh "echo '--------------- do pylint testing ---------------'"
-                                //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
-                                sh "pylint --generate-rcfile > .pylintrc"
-                                def ret=sh(returnStdout: true, script: 'python3 -m pylint *.py || true').trim()
-                                println ret
-                               }//script
+                                    sh "echo 'pylist'"
+//                                 sh "echo '--------------- do pylint testing ---------------'"
+//                                 //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
+//                                 sh "pylint --generate-rcfile > .pylintrc"
+//                                 def ret=sh(returnStdout: true, script: 'python3 -m pylint *.py || true').trim()
+//                                 println ret
+//                                }//script
                      } //step
                 }// stage
 
@@ -139,10 +140,11 @@ pipeline {
 //                     }//agent
                     steps {
                          script {
-                                sh "echo 'do some tests!!!'; sleep 2"
-                                //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
-                                def ret=sh(returnStdout: true, script: 'docker exec bibi_polybot_container_${BUILD_ID} pytest -v  polytest.py').trim()
-                                println ret
+                                   sh "echo 'Unitest'"
+//                                 sh "echo 'do some tests!!!'; sleep 2"
+//                                 //def ret = sh script: 'docker exec ${env.CONT_ID} pytest -v  polytest.py', returnStdout: true
+//                                 def ret=sh(returnStdout: true, script: 'docker exec bibi_polybot_container_${BUILD_ID} pytest -v  polytest.py').trim()
+//                                 println ret
                                }//script
                     }//steps
                 }//stage
