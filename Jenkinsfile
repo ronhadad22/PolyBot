@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'https://hub.docker.com/layers/kubealon/private-course/poly-bot-16/images/sha256-f2a6456da8d746c9b0798e6087c0725f3795cec1f5655aad1db2d969db0f8bd9?context=repo'
+            image 'https://hub.docker.com/layers/kubealon/private-course/poly-bot-24/images/sha256-5f3f44c18388b836d20787e4e814d48567aec85673dc6c15f546c6570b881015?context=repo'
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
