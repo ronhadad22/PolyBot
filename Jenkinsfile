@@ -3,7 +3,6 @@ pipeline {
     options{
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10'))
     disableConcurrentBuilds()
-
         
    }
     agent{
