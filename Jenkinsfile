@@ -164,6 +164,7 @@ pipeline {
             docker rmi -f bibiefrat/ci_cd_1:polybot_bibi_${env.BUILD_ID}
             """
             unstash "first-stash"
+            sh "cat pylint.log"
         }
     }
 }
