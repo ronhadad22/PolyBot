@@ -25,7 +25,7 @@ pipeline {
                     sh 'echo $TOKEN > .telegramToken'
                     sh 'cat .telegramToken'
                     sh 'pip3 install --no-cache-dir -r requirements.txt'  
-                    sh 'python3 -m pytest --junitxml results.xml tests'
+                    sh 'python3 -m pytest --junitxml results.xml tests/*.py'
                 }
             }
             post {
