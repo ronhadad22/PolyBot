@@ -19,8 +19,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'git-hub-ron', passwordVariable: 'pass', usernameVariable: 'user')]) {
-
+              withCredentials([usernamePassword(credentialsId: '526a2c3a-6054-4f78-9f99-105a66f35790', passwordVariable: 'pass', usernameVariable: 'user')]) {
+}
                   //sh "docker build -t ronhad/private-course:poly-bot-${env.BUILD_NUMBER} . "
                   //sh "docker login --username $user --password $pass"
                   sh 'echo unitest'
