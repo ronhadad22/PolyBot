@@ -22,7 +22,7 @@ pipeline {
         stage('unit test') {
             steps {
                 withCredentials([string(credentialsId: 'telegram-poly-bot-token', variable: 'TOKEN')]) {
-                    sh 'echo $TOKEN .telegramToken'
+                    sh 'echo $TOKEN > .telegramToken'
                     sh 'cat .telegramToken'
                     sh 'pip3 install --no-cache-dir -r requirements.txt'  
                     sh 'python3 -m pytest --junitxml results.xml tests'
