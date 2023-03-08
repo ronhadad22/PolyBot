@@ -29,6 +29,8 @@ pipeline {
                 // }
                 withCredentials([file(credentialsId: 'telegramToken', variable: 'TOKEN_FILE')]) {
                     sh "cp ${TOKEN_FILE} ./.telegramToken"
+                    sh 'pip3 install --no-cache-dir -r requirements.txt'  
+                    sh 'python3 -m pytest --junitxml results.xml tests/*.py'
                 }
             }
             post {
