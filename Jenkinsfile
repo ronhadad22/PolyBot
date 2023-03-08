@@ -48,7 +48,7 @@ pipeline {
                             --password-stdin
                     """
                     sh """
-                        sudo docker push \
+                        docker push \
                             kubealon/private-course:poly-bot-${env.BUILD_NUMBER}
                     """
                     sh """
