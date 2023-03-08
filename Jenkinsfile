@@ -1,3 +1,5 @@
+@Library('shared-lib-int') _
+
 pipeline {
 
     options{
@@ -34,14 +36,6 @@ pipeline {
                     }
                 }
             }
-            // steps {
-            //     withCredentials([file(credentialsId: 'telegramToken', variable: 'TELEGRAM_TOKEN')]) {
-            //       sh "cp ${TELEGRAM_TOKEN} .telegramToken"
-            //       sh 'pip3 install -r requirements.txt'
-            //       sh "python3 -m pytest --junitxml results.xml tests/*.py"
-            //       sh "python3 -m pylint *.py || true"
-            //     }
-            // }
         }
         stage('Build') {
             steps {
