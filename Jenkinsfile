@@ -30,9 +30,9 @@ pipeline {
                    }
                }
     }
-}
          post {
            always {
                sh 'docker rmi ayamb99/polybot'
                }
            }
+}
