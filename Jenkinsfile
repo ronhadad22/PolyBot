@@ -31,7 +31,7 @@ pipeline {
                 )
             ]) {
                 sh """
-                    echo $pass | sudo -S docker build \
+                    echo $pass | docker build \
                         --build-arg TELEGRAM_TOKEN=$TELEGRAM_TOKEN \
                         -t kubealon/private-course:poly-bot-${env.BUILD_NUMBER} .
                 """
@@ -43,7 +43,7 @@ pipeline {
                     )
                 ]) {
                     sh """
-                        echo $DOCKERHUB_PASSWORD | sudo -S docker login \
+                        echo $DOCKERHUB_PASSWORD | docker login \
                             --username $DOCKERHUB_USERNAME \
                             --password-stdin
                     """
@@ -52,7 +52,7 @@ pipeline {
                             kubealon/private-course:poly-bot-${env.BUILD_NUMBER}
                     """
                     sh """
-                        echo $pass | sudo -S docker push \
+                        echo $pass |docker push \
                             kubealon/private-course:poly-bot-${env.BUILD_NUMBER}
                     """
                 }
@@ -75,7 +75,7 @@ pipeline {
 post {
     always {
         // Cleanup Docker images from the disk
-        sh 'sudo docker system prune -af'
+        sh 'docker system prune -af'
         }
     }
 }
