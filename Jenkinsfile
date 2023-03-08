@@ -26,7 +26,7 @@ pipeline {
                     usernameVariable: 'user'
                 ),
                 string(
-                    credentialsId: 'telegramToken',
+                    credentialsId: 'telegram-token',
                     variable: 'TELEGRAM_TOKEN'
                 )
             ]) {
