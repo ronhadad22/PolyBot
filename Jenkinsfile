@@ -32,7 +32,7 @@ pipeline {
     }
          post {
            always {
-               sh 'docker rmi polybot'
+               sh 'docker rmi -f ayamb99/polybot:poly-bot-${env.BUILD_NUMBER}'
                }
            }
 }
