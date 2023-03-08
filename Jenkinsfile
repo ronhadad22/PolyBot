@@ -22,10 +22,6 @@ pipeline {
         stage('unit test') {
             steps {
                 // withCredentials([string(credentialsId: 'telegram-poly-bot-token', variable: 'TOKEN')]) {
-                //     sh 'echo $TOKEN > .telegramToken'
-                //     sh 'cat .telegramToken'
-                //     sh 'pip3 install --no-cache-dir -r requirements.txt'  
-                //     sh 'python3 -m pytest --junitxml results.xml tests/*.py'
                 // }
                 withCredentials([file(credentialsId: 'telegramToken', variable: 'TOKEN_FILE')]) {
                     sh "cp ${TOKEN_FILE} ./.telegramToken"
@@ -41,11 +37,9 @@ pipeline {
         }
         stage('Build') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'git-hub-ron', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
                   sh "docker build -t ronhad/private-course:poly-bot-${env.BUILD_NUMBER} . "
-                  sh "docker login --username $user --password $pass"
-                  sh "docker push ronhad/private-course:poly-bot-${env.BUILD_NUMBER}"
  //               sh '''
  //               docker login --username $user --password $pass
  //               docker build ...
@@ -66,15 +60,15 @@ pipeline {
    //             }
             }
         }
-        stage('Stage II') {
+        stage('push') {
             steps {
-                sh 'echo "stage II..."'
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
+
+                  sh "docker login --username $user --password $pass"
+                  sh "docker push ronhad/private-course:poly-bot-${env.BUILD_NUMBER}"
+                }
             }
         }
-        stage('Stage III ...') {
-            steps {
-                sh 'echo echo "stage III..."'
-            }
-        }
+
     }
 }
