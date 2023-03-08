@@ -18,14 +18,30 @@ pipeline {
 //snyk container test my-image:latest --file=Dockerfile
     stages {
         stage('Test') {
-            steps {
-                withCredentials([file(credentialsId: 'telegramToken', variable: 'TELEGRAM_TOKEN')]) {
-                  sh "cp ${TELEGRAM_TOKEN} .telegramToken"
-                  sh 'pip3 install -r requirements.txt'
-                  sh "python3 -m pytest --junitxml results.xml tests/*.py"
-                  sh "python3 -m pylint *.py || true"
+            parallel {
+                stage('pytest') {
+                    steps {
+                        withCredentials([file(credentialsId: 'telegramToken', variable: 'TELEGRAM_TOKEN')]) {
+                        sh "cp ${TELEGRAM_TOKEN} .telegramToken"
+                        sh 'pip3 install -r requirements.txt'
+                        sh "python3 -m pytest --junitxml results.xml tests/*.py"
+                        }
+                    }
+                }
+                stage('pylint') {
+                    steps {
+                        sh "python3 -m pylint *.py || true"
+                    }
                 }
             }
+            // steps {
+            //     withCredentials([file(credentialsId: 'telegramToken', variable: 'TELEGRAM_TOKEN')]) {
+            //       sh "cp ${TELEGRAM_TOKEN} .telegramToken"
+            //       sh 'pip3 install -r requirements.txt'
+            //       sh "python3 -m pytest --junitxml results.xml tests/*.py"
+            //       sh "python3 -m pylint *.py || true"
+            //     }
+            // }
         }
         stage('Build') {
             steps {
