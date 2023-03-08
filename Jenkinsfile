@@ -14,22 +14,21 @@ pipeline {
     environment{
         SNYK_TOKEN = credentials('snyk-token')
     }
-    parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
+    // parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
 //snyk container test my-image:latest --file=Dockerfile
     stages {
+        stage('Test') {
+            steps {
+                  sh 'pip3 install -r requirements.txt'
+                  sh "python3 -m pytest --junitxml results.xml tests/*.py"
+            }
+        }
         stage('Build') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
                   sh "docker build -t ronhad/private-course:poly-bot-${env.BUILD_NUMBER} . "
                   sh "docker login --username $user --password $pass"
-                  sh 'echo unitest'
- //               sh '''
- //               docker login --username $user --password $pass
- //               docker build ...
- //               docker tag ...
- //               docker push ...
- //          '''
                 }
             }
         }
