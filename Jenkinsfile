@@ -32,7 +32,7 @@ pipeline {
     }
          post {
            always {
-               sh 'docker rmi ayamb99/polybot'
+               sh 'docker rmi polybot'
                }
            }
 }
