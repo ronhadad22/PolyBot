@@ -23,10 +23,16 @@ pipeline {
             }
          }
       }
-        stage('Stage III...') {
+        stage('Stage II...') {
+            steps {
+                sh 'echo "Stage II..."'
+            }
+        }
+        
+        stage('Stage III..') {
             steps {
                 sh 'echo "Stage III..."'
             }
-        }
+         }
     }
 }
