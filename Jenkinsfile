@@ -32,7 +32,11 @@ pipeline {
                 }
                 stage('pylint') {
                     steps {
-                        sh "python3 -m pylint *.py || true"
+                        script { 
+                            log.info 'Starting'
+                            log.warning 'Nothing to do!'
+                            sh "python3 -m pylint *.py || true"
+                        }
                     }
                 }
             }
