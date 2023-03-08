@@ -5,14 +5,13 @@ pipeline {
     disableConcurrentBuilds()
 
    }
-//     agent{
-//      docker {
-//         image 'jenkins-agent:latest'
-//         args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-//     }
-//     }
-    agent any
-    
+    agent{
+     docker {
+        image 'jenkins-agent:latest'
+        args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+    }
+    }
+
         parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
 
     environment {
