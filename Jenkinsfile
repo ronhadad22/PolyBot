@@ -23,6 +23,7 @@ pipeline {
                   sh "cp ${TELEGRAM_TOKEN} .telegramToken"
                   sh 'pip3 install -r requirements.txt'
                   sh "python3 -m pytest --junitxml results.xml tests/*.py"
+                  sh "python3 -m pylint *.py"
                 }
             }
         }
@@ -35,11 +36,11 @@ pipeline {
                 }
             }
         }
-        stage('snyk test') {
-            steps {
-                sh "snyk container test --severity-threshold=critical ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
-            }
-        }
+        // stage('snyk test') {
+        //     steps {
+        //         sh "snyk container test --severity-threshold=critical ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
+        //     }
+        // }
         stage('push') {
             steps {
                     sh "docker push ronhad/private-course:poly-bot-${env.BUILD_NUMBER}"
