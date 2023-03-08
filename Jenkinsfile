@@ -29,5 +29,9 @@ pipeline {
                        sh "docker push ayamb99/polybot:poly-bot-${env.BUILD_NUMBER}"
                    }
                }
+        post {
+           always {
+               sh 'docker rmi myapp'
+               }
            }
        }
