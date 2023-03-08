@@ -24,11 +24,6 @@ pipeline {
                    sh "docker push ayamb99/polybot:poly-bot-${env.BUILD_NUMBER}"
                }
            }
-        stage('Stage III ...')  {
-                   steps {
-                       sh 'echo " Stage III..."'
-                   }
-               }
     }
          post {
            always {
