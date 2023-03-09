@@ -52,11 +52,11 @@ pipeline {
                 }
             }
         }
-        // stage('snyk test') {
-        //     steps {
-        //         sh "snyk container test --severity-threshold=critical ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
-        //     }
-        // }
+        stage('snyk test') {
+            steps {
+                sh "snyk container test --severity-threshold=critical ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
+            }
+        }
         stage('push') {
             steps {
                     sh "docker push ronhad/private-course:poly-bot-${env.BUILD_NUMBER}"
