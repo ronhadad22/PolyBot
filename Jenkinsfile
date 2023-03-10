@@ -22,8 +22,7 @@ pipeline {
             withCredentials([
                 usernamePassword(
                     credentialsId: 'github-login',
-                    passwordVariable: 'pass',
-                    usernameVariable: 'user'
+                    variable: 'GITHUB_TOKEN'
                 ),
                 string(
                     credentialsId: 'telegram-token',
@@ -31,7 +30,7 @@ pipeline {
                 )
             ]) {
                 sh """
-                    echo $pass | docker build \
+                    echo $GITHUB_TOKEN | docker build \
                         --build-arg TELEGRAM_TOKEN=$TELEGRAM_TOKEN \
                         -t kubealon/private-course:poly-bot-${env.BUILD_NUMBER} .
                 """
