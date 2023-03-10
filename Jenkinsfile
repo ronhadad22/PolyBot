@@ -1,7 +1,7 @@
 pipeline {
     agent { 
         docker {
-            image 'https://hub.docker.com/layers/kubealon/private-course/jenkins-agent/images/sha256-352ee31352cd7a0d044791838f701de3d59a89881323bffb82487db897b6f280?context=repo'
+            image 'kubealon/private-course/jenkins-agent/images/sha256-352ee31352cd7a0d044791838f701de3d59a89881323bffb82487db897b6f280?context=repo'
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
