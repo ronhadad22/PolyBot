@@ -3,7 +3,7 @@
 
 FROM python:3.9.16-slim
 ARG TELEGRAM_TOKEN
-WORKDIR /app
+WORKDIR /devops/polybot/PolyBot
 COPY . .
 RUN pip3 install -r requirements.txt
 #COPY . .
