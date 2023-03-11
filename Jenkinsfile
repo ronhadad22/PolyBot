@@ -74,7 +74,8 @@ pipeline {
             sh 'echo "hello world"'
         }
     }
-
+    }
+    
     post {
         always {
             // Cleanup Docker images from the disk
