@@ -64,6 +64,9 @@ pipeline {
     }
 
      stage('snyk test') {
+         environment{
+        SNYK_TOKEN = credentials('snyk_token')
+         }
             steps {
                 
                 sh " snyk ignore --id=3320493"
