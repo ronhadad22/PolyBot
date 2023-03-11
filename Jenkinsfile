@@ -64,13 +64,11 @@ pipeline {
     }
 
      stage('snyk test') {
- //        environment{
-  //      SNYK_TOKEN = '0f8e0f98-089a-458b-8fa6-bb4c6be45e32'
-   //      }
+
             steps {
                                 
                 sh "snyk container ignore --id=3320493 -q test --severity-threshold=critical --exclude-base-image-vulns kubealon/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
-              //  sh " snyk ignore --id=3320493"
+             
             }
         }
        
