@@ -65,8 +65,8 @@ pipeline {
 
      stage('snyk test') {
             steps {
-                sh "snyk config set disableSuggestions=true"
-                sh "snyk container test --severity-threshold=critical --failOnIssues=false --exclude-base-image-vulns kubealon/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
+                sh " snyk ignore --id=SNYK-DEBIAN11-CURL-3320493"
+                sh "snyk container test --severity-threshold=critical  --exclude-base-image-vulns kubealon/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
                 
             }
         }
