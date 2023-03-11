@@ -65,6 +65,8 @@ pipeline {
 
      stage('snyk test') {
             steps {
+                sh "echo $SNYK_TOKEN"
+
                 sh " snyk ignore --id=SNYK-DEBIAN11-CURL-3320493"
                 sh "snyk container test --severity-threshold=critical  --exclude-base-image-vulns kubealon/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
                 
