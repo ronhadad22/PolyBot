@@ -67,6 +67,7 @@ pipeline {
                 sh "snyk container test --severity-threshold=critical ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
             }
         }
+    }    
     stage('Stage III ...') {
         steps {
             sh 'echo "stage III..."'
