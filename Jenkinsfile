@@ -5,7 +5,9 @@ pipeline {
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
-
+    environment{
+        SNYK_TOKEN = credentials('snyk_token')
+        {
     options {
         skipDefaultCheckout(true)
         timestamps()
@@ -60,11 +62,11 @@ pipeline {
         }
     }
 
-    stage('Stage II') {
-        steps {
-            sh 'echo "stage II..."'
+     stage('snyk test') {
+            steps {
+                sh "snyk container test --severity-threshold=critical ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
+            }
         }
-    }
     stage('Stage III ...') {
         steps {
             sh 'echo "stage III..."'
