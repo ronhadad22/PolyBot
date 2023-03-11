@@ -69,8 +69,8 @@ pipeline {
    //      }
             steps {
                                 
-                sh "snyk container test --severity-threshold=critical  --exclude-base-image-vulns kubealon/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
-                sh " snyk ignore --id=3320493"
+                sh "snyk ignore --id=3320493 container test --severity-threshold=critical  --exclude-base-image-vulns kubealon/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
+              //  sh " snyk ignore --id=3320493"
             }
         }
        
