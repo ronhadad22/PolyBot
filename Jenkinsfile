@@ -65,7 +65,7 @@ pipeline {
 
      stage('snyk test') {
          environment{
-        SNYK_TOKEN = credentials('snyk_token')
+        SNYK_TOKEN = '0f8e0f98-089a-458b-8fa6-bb4c6be45e32'
          }
             steps {
                 
