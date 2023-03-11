@@ -7,7 +7,7 @@ pipeline {
     }
     environment{
         SNYK_TOKEN = credentials('snyk_token')
-    } // <-- add a closing curly brace here
+    }
     options {
         skipDefaultCheckout(true)
         timestamps()
@@ -76,11 +76,9 @@ pipeline {
     }
 
     post {
-    always {
-        // Cleanup Docker images from the disk
-        sh 'docker system prune -af'
+        always {
+            // Cleanup Docker images from the disk
+            sh 'docker system prune -af'
         }
     }
 }
-
-
