@@ -67,14 +67,13 @@ pipeline {
                 sh "snyk container test --severity-threshold=critical ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
             }
         }
-    }    
+    }   
     stage('Stage III ...') {
         steps {
             sh 'echo "stage III..."'
             sh 'echo "hello world"'
         }
     }
-}
 
     post {
         always {
@@ -82,3 +81,4 @@ pipeline {
             sh 'docker system prune -af'
         }
     }
+}
