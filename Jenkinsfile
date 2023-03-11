@@ -74,6 +74,7 @@ pipeline {
             sh 'echo "hello world"'
         }
     }
+}
 
     post {
         always {
@@ -81,4 +82,3 @@ pipeline {
             sh 'docker system prune -af'
         }
     }
-}
