@@ -1,6 +1,5 @@
 
 
-
 FROM python:3.9.16-slim
 ARG TELEGRAM_TOKEN
 WORKDIR /devops/polybot/PolyBot
