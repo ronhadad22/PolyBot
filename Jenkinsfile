@@ -7,6 +7,7 @@ stage('Build Bot app') {
        sh "docker build -t avijwdocker/polybot-aviyaaqov-${env.BUILD_NUMBER}. "
        sh "docker login --username $user --password $pass"
        sh "docker push avijwdocker/polybot-aviyaaqov-${env.BUILD_NUMBER}"
-      
+       }
+     }
    }
 }
