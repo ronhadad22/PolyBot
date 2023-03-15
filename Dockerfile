@@ -4,6 +4,5 @@ WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
-EXPOSE 80
 ENV TOKEN_PATH /app/.telegramToken
 CMD ["python3", "bot.py"]
