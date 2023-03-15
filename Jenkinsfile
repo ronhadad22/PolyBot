@@ -1,15 +1,20 @@
 pipeline {
     
+  
+    options{
+         buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10'))
+         disableConcurrentBuilds()
+    }
+    
     agent {
       docker {
         image 'jenkins-agent:latest'
         args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
-        
-    options{
-         buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10'))
-         disableConcurrentBuilds()
+    
+    environment{
+        SNYK_TOKEN = credentials('snyk-token')
     }
     
     stages {
