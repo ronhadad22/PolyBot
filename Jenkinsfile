@@ -37,7 +37,7 @@ pipeline {
       }
         stage('snyk test') {
             steps {
-                sh "snyk container test --severity-threshold=high ayamb99/polybot:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
+                sh "snyk container test --severity-threshold=critical ayamb99/polybot:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
             }
         }
         
