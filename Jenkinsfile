@@ -37,7 +37,7 @@ pipeline {
       }
         stage('snyk test') {
             steps {
-                sh 'snyk container test ayamb99/polybot:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile'
+                sh "snyk container test ayamb99/polybot:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
             }
         }
         
