@@ -7,11 +7,11 @@ pipeline {
         }
     }
         
-
-   
     options{
-        disableConcurrentBuilds()
+         buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10'))
+         disableConcurrentBuilds()
     }
+    
     stages {
         stage('Build') {
             steps {
