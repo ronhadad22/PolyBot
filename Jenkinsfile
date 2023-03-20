@@ -1,9 +1,22 @@
 pipeline {
-    agent any
-   
+    
+  
     options{
-        disableConcurrentBuilds()
+         buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10'))
+         disableConcurrentBuilds()
     }
+    
+    agent {
+      docker {
+        image 'jenkins-agent:latest'
+        args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
+    
+    environment{
+        SNYK_TOKEN = credentials('snyk-token')
+    }
+    
     stages {
         stage('Build') {
             steps {
@@ -12,7 +25,6 @@ pipeline {
                   
                  sh "docker build -t ayamb99/polybot:poly-bot-${env.BUILD_NUMBER} . "
                  sh "docker login --username $user --password $pass"
-                 sh "docker push ayamb99/polybot:poly-bot-${env.BUILD_NUMBER}"
   //              sh '''
  //               docker login --username $user --password $pass
  //               docker build ...
@@ -23,15 +35,15 @@ pipeline {
             }
          }
       }
-        stage('Stage II...') {
+        stage('snyk test') {
             steps {
-                sh 'echo "Stage II..."'
+                sh "snyk container test --severity-threshold=critical ayamb99/polybot:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
             }
         }
         
-        stage('Stage III..') {
+        stage('push') {
             steps {
-                sh 'echo "Stage III..."'
+                sh "docker push ayamb99/polybot:poly-bot-${env.BUILD_NUMBER}"
             }
          }
     }
