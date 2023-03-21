@@ -31,6 +31,16 @@ pipeline {
                     }
                 }
             }
+
+            stage('pylint') {
+                    steps {
+                        script {
+                            logs.info 'Starting'
+                            logs.warning 'Nothing to do!'
+                            sh "python3 -m pylint *.py || true"
+                        }
+                    }
+                }
         }
 
         stage('Build') {
