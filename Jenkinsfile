@@ -18,6 +18,21 @@ pipeline {
     }
     
     stages {
+
+        stage('Test') {
+            parallel {
+                stage('pytest') {
+                    steps {
+                        withCredentials([file(credentialsId: 'telegramToken', variable: 'TELEGRAM_TOKEN')]) {
+                        sh "cp ${TELEGRAM_TOKEN} .telegramToken"
+                        sh 'pip3 install -r requirements.txt'
+                        sh "python3 -m pytest --junitxml results.xml tests/*.py"
+                        }
+                    }
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
