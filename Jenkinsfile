@@ -30,7 +30,6 @@ pipeline {
                         }
                     }
                 }
-            }
                 stage('pylint') {
                     steps {
                         script {
@@ -41,6 +40,7 @@ pipeline {
                     }
                 }
             }
+        }
 
         stage('Build') {
             steps {
