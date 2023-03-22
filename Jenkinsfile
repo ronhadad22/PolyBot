@@ -31,8 +31,7 @@ pipeline {
                     }
                 }
             }
-
-            stage('pylint') {
+                stage('pylint') {
                     steps {
                         script {
                             logs.info 'Starting'
@@ -41,6 +40,7 @@ pipeline {
                         }
                     }
                 }
+            }
         }
 
         stage('Build') {
