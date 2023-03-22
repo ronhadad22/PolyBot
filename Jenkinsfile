@@ -19,8 +19,8 @@ pipeline {
         stage('Snyk Test') {
             withCredentials([string(credentialsId: 'SnykToken', variable: 'SNYK_TOKEN')]) {
             sh "snyk container test --severity-threshold=critical build_bot:${BUILD_NUMBER} --file=Dockerfile --token=${SNYK_TOKEN}"
-    }
             }
+        }
         stage('Build Bot app') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DockerTokenID', passwordVariable: 'myaccesstoken', usernameVariable: 'happytoast')]) {
