@@ -1,10 +1,20 @@
 pipeline {
-    
-   agent {
-    docker {
-        image 'jenkins-agent:latest'
-        args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+    agent {
+        docker {
+            image 'jenkins-agent:latest'
+            args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
+    }
+    environment {
+        MY_GLOBAL_VARIABLE = 'some value'
+        timestamp = sh(script: 'date "+%Y%m%d%H%M%S"', returnStdout: true).trim()
+        SNYK_TOKEN = credentials('SnykToken')
+    }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '3'))
+        disableConcurrentBuilds()
+        timestamps()
+        timeout(time: 10, unit: 'MINUTES')
     }
     
 stage('Build Bot app') {
