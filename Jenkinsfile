@@ -26,6 +26,11 @@ pipeline {
                 }
             }
         }
+        stage('PolyTest') {
+            steps {
+            sh "python3 -m pytest --junitxml results.xml tests/*.py"
+                  }
+            }
         stage('Snyk Test') {
             steps {
             withCredentials([string(credentialsId: 'SnykToken', variable: 'SNYK_TOKEN')]) {
@@ -42,6 +47,7 @@ pipeline {
     post {
         always {
             sh "docker rmi happytoast/build_bot:${BUILD_NUMBER}"
+            junit allowEmptyResults: true, testResults: 'results.xml'
         }
     }
 }
