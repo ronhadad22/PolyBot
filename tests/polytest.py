@@ -8,7 +8,7 @@ class TestBot(unittest.TestCase):
 
     def setUp(self):
         with open('.telegramToken') as f:
-            _token = f.read()
+            _token = f.read().strip()
         # create a mock updater object
         self.updater = MagicMock()
 
