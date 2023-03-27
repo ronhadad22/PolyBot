@@ -26,23 +26,30 @@ pipeline {
                 }
             }
         }
-        stage('PolyTest') {
+        stage('Install Python3') {
             steps {
-            sh "python3 -m pytest --junitxml results.xml tests/*.py"
-                  }
-            }
-        stage('Snyk Test') {
-            steps {
-            withCredentials([string(credentialsId: 'SnykToken', variable: 'SNYK_TOKEN')]) {
-            sh "snyk container test --severity-threshold=critical build_bot:${BUILD_NUMBER} --file=Dockerfile --token=${SNYK_TOKEN} --exclude-base-image-vulns"
+                sh "apt-get update && apt-get install -y python3"
+                sh "apt-get install -y python3-pip"
+                sh "pip3 install pytest"
             }
         }
+        stage('PolyTest') {
+            steps {
+                sh "python3 -m pytest --junitxml results.xml tests/polytest.py"
+            }
+        }
+        stage('Snyk Test') {
+            steps {
+                withCredentials([string(credentialsId: 'SnykToken', variable: 'SNYK_TOKEN')]) {
+                    sh "snyk container test --severity-threshold=critical build_bot:${BUILD_NUMBER} --file=Dockerfile --token=${SNYK_TOKEN} --exclude-base-image-vulns"
+                }
+            }
         }
         stage('Push Bot App') {
             steps {
-                    sh "docker push happytoast/build_bot:${BUILD_NUMBER}"
-                }
+                sh "docker push happytoast/build_bot:${BUILD_NUMBER}"
             }
+        }
     }
     post {
         always {
