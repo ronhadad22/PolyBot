@@ -27,6 +27,8 @@ pipeline {
                 sh "pip3 install -r requirements.txt"
             }
         }
+    stage('Tests') {
+    parallel {
     stage('PylintTest') {
                     steps {
                             sh "python3 -m pylint --exit-zero bot.py"
@@ -34,11 +36,14 @@ pipeline {
                     }
     stage('PolyTest') {
             steps {
-                withCredentials([file(credentialsId: 'telegramToken', variable: 'TELEGRAM_TOKEN')]) {
-                sh "cp ${TELEGRAM_TOKEN} .telegramToken"
+                withCredentials([string(credentialsId: 'telegramToken', variable: 'TELEGRAM_TOKEN')]) {
+                sh "touch .telegramToken"
+                sh "echo ${TELEGRAM_TOKEN} > .telegramToken"
                 sh "python3 -m pytest --junitxml results.xml tests/polytest.py"
                 }
             }
+        }
+        }
         }
     stage('Build Bot App') {
             steps {
