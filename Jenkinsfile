@@ -31,8 +31,8 @@ pipeline {
     parallel {
     stage('PylintTest') {
                     steps {
-                            sh "python3 -m pylint --exit-zero bot.py"
-                        }
+                            sh "python3 -m pylint --exit-zero -f parseable --reports=no *.py > pylint.log"
+                    }
                     }
     stage('PolyTest') {
             steps {
@@ -71,6 +71,12 @@ pipeline {
         always {
             sh "docker rmi happytoast/build_bot:${BUILD_NUMBER}"
             junit allowEmptyResults: true, testResults: 'results.xml'
+            sh 'cat pylint.log'
+    recordIssues (
+      enabledForFailure: true,
+      aggregatingResults: true,
+      tools: [pyLint(name: 'Pylint', pattern: '**/pylint.log')]
+    )
         }
     }
 }
