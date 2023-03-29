@@ -17,6 +17,25 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
     }
     stages {
+            stage('Install Python3') {
+            steps {
+                sh "apt-get update && apt-get install -y python3"
+                sh "apt-get install -y python3-pip"
+                sh "pip3 install pytest"
+                sh "pip3 install pylint"
+            }
+        }
+    stage('Pylint') {
+                    steps {
+                            sh "python3 -m pylint bot.py"
+                        }
+                    }
+                }
+    stage('PolyTest') {
+            steps {
+                sh "python3 -m pytest --junitxml results.xml tests/polytest.py"
+            }
+        }
     stage('Build Bot App') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DockerTokenID', passwordVariable: 'myaccesstoken', usernameVariable: 'happytoast')]) {
@@ -24,18 +43,6 @@ pipeline {
                     sh "docker build -t build_bot:${BUILD_NUMBER} ."
                     sh "docker tag build_bot:${BUILD_NUMBER} happytoast/build_bot:${BUILD_NUMBER}"
                 }
-            }
-        }
-        stage('Install Python3') {
-            steps {
-                sh "apt-get update && apt-get install -y python3"
-                sh "apt-get install -y python3-pip"
-                sh "pip3 install pytest"
-            }
-        }
-        stage('PolyTest') {
-            steps {
-                sh "python3 -m pytest --junitxml results.xml tests/polytest.py"
             }
         }
         stage('Snyk Test') {
