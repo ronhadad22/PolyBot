@@ -30,7 +30,6 @@ pipeline {
                             sh "python3 -m pylint bot.py"
                         }
                     }
-                }
     stage('PolyTest') {
             steps {
                 sh "python3 -m pytest --junitxml results.xml tests/polytest.py"
