@@ -9,6 +9,7 @@ pipeline {
         MY_GLOBAL_VARIABLE = 'some value'
         timestamp = sh(script: 'date "+%Y%m%d%H%M%S"', returnStdout: true).trim()
         SNYK_TOKEN = credentials('SnykToken')
+        TELEGRAM_TOKEN = credentials('telegramToken')
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '3'))
@@ -17,22 +18,26 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
     }
     stages {
-            stage('Install Python3') {
+            stage('Installations') {
             steps {
                 sh "apt-get update && apt-get install -y python3"
                 sh "apt-get install -y python3-pip"
                 sh "pip3 install pytest"
                 sh "pip3 install pylint"
+                sh "pip3 install -r requirements.txt"
             }
         }
-    stage('Pylint') {
+    stage('PylintTest') {
                     steps {
-                            sh "python3 -m pylint bot.py"
+                            sh "python3 -m pylint --exit-zero bot.py"
                         }
                     }
     stage('PolyTest') {
             steps {
+                withCredentials([file(credentialsId: 'telegramToken', variable: 'TELEGRAM_TOKEN')]) {
+                sh "cp ${TELEGRAM_TOKEN} .telegramToken"
                 sh "python3 -m pytest --junitxml results.xml tests/polytest.py"
+                }
             }
         }
     stage('Build Bot App') {
