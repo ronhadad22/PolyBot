@@ -1,0 +1,38 @@
+
+node {
+    try {
+        stage('Test') {
+            parallel (
+                'pytest': {
+                    withCredentials([file(credentialsId: 'telegramToken', variable: 'TELEGRAM_TOKEN')]) {
+                        sh "cp ${TELEGRAM_TOKEN} .telegramToken"
+                        sh 'pip3 install -r requirements.txt'
+                        sh "python3 -m pytest --junitxml results.xml tests/*.py"
+                    }
+                },
+                'pylint': {
+                    script {
+                        logs.info('Starting')
+                        logs.warning('Nothing to do!')
+                        sh "python3 -m pylint *.py || true"
+                    }
+                }
+            )
+        }
+        stage('Build') {
+            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                sh "docker build -t ayamb99/polybot:poly-bot-${env.BUILD_NUMBER} ."
+                sh "docker login --username $user --password $pass"
+            }
+        }
+        stage('snyk test') {
+            sh "snyk container test --severity-threshold=critical ayamb99/polybot:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
+        }
+        stage('push') {
+            sh "docker push ayamb99/polybot:poly-bot-${env.BUILD_NUMBER}"
+        }
+    } finally {
+        junit allowEmptyResults: true, testResults: 'results.xml'
+        sh 'docker image prune -f' // Clean the build artifacts from Jenkins server
+    }
+}
