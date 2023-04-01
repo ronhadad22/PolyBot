@@ -81,7 +81,7 @@ pipeline {
         always {
            
             junit allowEmptyResults: true, testResults: 'results.xml'
-            sh "docker rmi ayamb99/polybot:poly-bot-${env.BUILD_NUMBER}"
+            sh 'docker image prune -f'
             
                }
           }
