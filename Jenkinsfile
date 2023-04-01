@@ -76,4 +76,14 @@ pipeline {
             }
          }
     }
+    
+    post {
+        always {
+           
+            junit allowEmptyResults: true, testResults: 'results.xml'
+            sh 'docker image prune -f' // Clean the build artifacts from Jenkins server
+            
+               }
+          }
+    
 }
