@@ -54,22 +54,22 @@ pipeline {
 
         stage('Build') {
            steps {
-                sh "docker build -t dariakalugny/polybot-${env.BUILD_NUMBER} . "
+                sh "docker build -t avijw96/polybot-${env.BUILD_NUMBER} . "
            }
         }
 
        stage('snyk test') {
             steps {
-                sh "snyk container test dariakalugny/polybot-${env.BUILD_NUMBER} --severity-threshold=high"
+                sh "snyk container test avijw96/polybot-${env.BUILD_NUMBER} --severity-threshold=high"
              }
            }
 
         stage('push') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dariakalugny-dockerhub', passwordVariable: 'pass', usernameVariable: 'user')])
+                withCredentials([usernamePassword(credentialsId: 'avijw96-dockerhub', passwordVariable: 'pass', usernameVariable: 'user')])
                 {
                  sh "docker login --username $user --password $pass"
-                sh "docker push dariakalugny/polybot-${env.BUILD_NUMBER}"
+                sh "docker push avijw96/polybot-${env.BUILD_NUMBER}"
               }
             }
         }
@@ -77,7 +77,7 @@ pipeline {
        post{
             always{
                junit allowEmptyResults: true, testResults: 'results.xml'
-                sh "docker rmi dariakalugny/polybot-${env.BUILD_NUMBER}"
+                sh "docker rmi avijw96/polybot-${env.BUILD_NUMBER}"
             }
 
        }
