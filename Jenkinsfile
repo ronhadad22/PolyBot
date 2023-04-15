@@ -1,83 +1,68 @@
-//@Library('shared-lib') _
-library 'shared-lib@main'
+// @Library('shared-lib-int') _
+
+//library 'shared-lib-int@main'
 
 pipeline {
 
-  options {
 
-    buildDiscarder logRotator( artifactNumToKeepStr: '10', numToKeepStr: '10')
+    options{
+    buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '10'))
     disableConcurrentBuilds()
-    timestamps()
-    timeout(time: 10, unit: 'MINUTES')
-   }
 
-  agent {
-    docker {
+   }
+    agent{
+     docker {
         image 'jenkins-agent:latest'
         args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
     }
     }
-
     environment{
-        SNYK_TOKEN = credentials('snyk')
+        SNYK_TOKEN = credentials('snyk-token')
     }
-
+    // parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
+//snyk container test my-image:latest --file=Dockerfile
     stages {
-        stage('test') {
-            parallel{
-               stage('pytest'){
-                   steps{
-                    catchError(message:'pytest ERROR',buildResult:'UNSTABLE',stageResult:'UNSTABLE'){
-                      withCredentials([file(credentialsId: 'telegramToken', variable: 'TELEGRAM_TOKEN')])
-                      {
-                       sh "cp ${TELEGRAM_TOKEN} .telegramToken"
-                       sh 'pip3 install -r requirements.txt'
-                       sh "python3 -m pytest --junitxml results.xml test/*.py"
-                      }
+        stage('Test') {
+            parallel {
+                stage('pytest') {
+                    steps {
+                        withCredentials([file(credentialsId: 'telegramToken', variable: 'TELEGRAM_TOKEN')]) {
+                        sh "cp ${TELEGRAM_TOKEN} .telegramToken"
+                        sh 'pip3 install -r requirements.txt'
+                        sh "python3 -m pytest --junitxml results.xml tests/*.py"
+                        }
                     }
-                  }
-               }
-
-                stage('pylint'){
-                   steps{
-                   catchError(message:'pylint ERROR',buildResult:'UNSTABLE',stageResult:'UNSTABLE'){
-                          script {
+                }
+                stage('pylint') {
+                    steps {
+                        script {
                             logs.info 'Starting'
                             logs.warning 'Nothing to do!'
                             sh "python3 -m pylint *.py || true"
                         }
-                      }
-                   }
-               }
+                    }
+                }
             }
         }
-
         stage('Build') {
-           steps {
-                sh "docker build -t avijw96/polybot-${env.BUILD_NUMBER} . "
-           }
-        }
-
-       stage('snyk test') {
             steps {
-                sh "snyk container test avijw96/polybot-${env.BUILD_NUMBER} --severity-threshold=high"
-             }
-           }
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
+                  sh "docker build -t ronhad/private-course:poly-bot-${env.BUILD_NUMBER} . "
+                  sh "docker login --username $user --password $pass"
+                }
+            }
+        }
+        stage('snyk test') {
+            steps {
+                sh "snyk container test --severity-threshold=critical ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
+            }
+        }
         stage('push') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'avijw96-dockerhub', passwordVariable: 'pass', usernameVariable: 'user')])
-                {
-                 sh "docker login --username $user --password $pass"
-                sh "docker push avijw96/polybot-${env.BUILD_NUMBER}"
-              }
-            }
-        }
-    }
-       post{
-            always{
-               junit allowEmptyResults: true, testResults: 'results.xml'
-                sh "docker rmi avijw96/polybot-${env.BUILD_NUMBER}"
+                    sh "docker push ronhad/private-course:poly-bot-${env.BUILD_NUMBER}"
             }
 
-       }
+        }
+
+    }
