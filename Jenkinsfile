@@ -1,6 +1,3 @@
-// @Library('shared-lib-int') _
-
-//library 'shared-lib-int@main'
 
 pipeline {
 
@@ -19,8 +16,6 @@ pipeline {
     environment{
         SNYK_TOKEN = credentials('snyk-token')
     }
-    // parameters { choice(choices: ['one', 'two'], description: 'this is just for testing', name: 'testchioce') }
-//snyk container test my-image:latest --file=Dockerfile
     stages {
         stage('Test') {
             parallel {
@@ -48,19 +43,19 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
-                  sh "docker build -t ronhad/private-course:poly-bot-${env.BUILD_NUMBER} . "
+                  sh "docker build -t avijwdocker/private-course:poly-bot-${env.BUILD_NUMBER} . "
                   sh "docker login --username $user --password $pass"
                 }
             }
         }
         stage('snyk test') {
             steps {
-                sh "snyk container test --severity-threshold=critical ronhad/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
+                sh "snyk container test --severity-threshold=critical avijwdocker/private-course:poly-bot-${env.BUILD_NUMBER} --file=Dockerfile"
             }
         }
         stage('push') {
             steps {
-                    sh "docker push ronhad/private-course:poly-bot-${env.BUILD_NUMBER}"
+                    sh "docker push avijwdocker/private-course:poly-bot-${env.BUILD_NUMBER}"
             }
 
         }
